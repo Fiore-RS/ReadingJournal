@@ -1,4 +1,7 @@
+import { useRef, useState } from "react";
 import type { BookFormData } from "../../types/book.js";
+import { resolveMediaUrl } from "../../services/api.js";
+import { uploadsService } from "../../services/uploadsService.js";
 import ModalShell from "./ModalShell.js";
 
 const COVER_PALETTE = [
@@ -19,8 +22,55 @@ const inputClass =
 const labelClass = "text-sm font-bold text-sand uppercase";
 
 export default function BookFormModal({ mode, formData, onChange, onSave, onClose }: BookFormModalProps) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Captured once per modal session (ModalRoot keys this component so it
+  // remounts fresh for each add/edit). Anything that differs from this by
+  // the time we upload again, remove, or close is an unsaved upload that
+  // nothing else references — safe to delete.
+  const initialCoverImage = useRef(formData.coverImage).current;
+
+  const cleanupIfAbandoned = async (current: string | null) => {
+    if (current && current !== initialCoverImage) {
+      try {
+        await uploadsService.deleteCover(current);
+      } catch {
+        // best-effort cleanup — not worth surfacing to the user
+      }
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-selecting the same file later
+    if (!file) return;
+
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const { url } = await uploadsService.uploadCover(file);
+      await cleanupIfAbandoned(formData.coverImage);
+      onChange({ coverImage: url });
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Upload failed — try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    await cleanupIfAbandoned(formData.coverImage);
+    onChange({ coverImage: null });
+  };
+
+  const handleClose = async () => {
+    await cleanupIfAbandoned(formData.coverImage);
+    onClose();
+  };
+
   return (
-    <ModalShell onClose={onClose} maxWidth={560}>
+    <ModalShell onClose={handleClose} maxWidth={560}>
       <h2 className="font-display text-[24px] text-clay mt-1.5 mb-5">{mode === "edit" ? "Edit Book" : "Add a New Book"}</h2>
       <div className="flex flex-col gap-3.5">
         <div>
@@ -98,7 +148,66 @@ export default function BookFormModal({ mode, formData, onChange, onSave, onClos
           </div>
         </div>
         <div>
-          <label className={labelClass}>Cover Color</label>
+          <label className={labelClass}>Category</label>
+          <div className="flex gap-2 mt-1.5">
+            {(["book", "novel", "manga"] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => onChange({ category: cat })}
+                className="flex-1 py-2 rounded-xl border-[1.5px] border-bark/25 font-bold text-[15px] capitalize"
+                style={{
+                  background: formData.category === cat ? "#7d9d6e" : "#fff",
+                  color: formData.category === cat ? "#fbf5e9" : "#5c4632",
+                }}
+              >
+                {cat === "book" ? "📘 Book" : cat === "novel" ? "📗 Novel" : "📓 Manga"}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label className={labelClass}>Cover Photo</label>
+          <div className="flex items-center gap-3 mt-1.5">
+            <div
+              className="w-16 h-24 rounded-lg overflow-hidden shrink-0 shadow-sm flex items-center justify-center text-2xl"
+              style={{ background: formData.coverImage ? undefined : formData.coverBg }}
+            >
+              {formData.coverImage ? (
+                <img
+                  src={resolveMediaUrl(formData.coverImage)}
+                  alt="Cover preview"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                "📕"
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="inline-block py-2 px-4 rounded-xl border-[1.5px] border-bark/25 bg-white text-sm font-bold text-bark cursor-pointer text-center">
+                {uploading ? "Uploading..." : formData.coverImage ? "Change Photo" : "Upload Photo"}
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  onChange={handleFileChange}
+                  disabled={uploading}
+                  className="hidden"
+                />
+              </label>
+              {!!formData.coverImage && (
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="text-xs text-[#a15b3d] font-bold underline text-left"
+                >
+                  Remove photo
+                </button>
+              )}
+            </div>
+          </div>
+          {!!uploadError && <div className="text-xs text-[#a15b3d] mt-1.5">{uploadError}</div>}
+        </div>
+        <div>
+          <label className={labelClass}>Cover Color {!!formData.coverImage && <span className="normal-case font-normal text-driftwood">(used if you remove the photo)</span>}</label>
           <div className="flex gap-2 mt-1.5 flex-wrap">
             {COVER_PALETTE.map((c) => (
               <div
@@ -118,7 +227,7 @@ export default function BookFormModal({ mode, formData, onChange, onSave, onClos
           <button onClick={onSave} className="py-3 px-6 rounded-[20px] border-none bg-sage text-parchment font-extrabold text-base cursor-pointer">
             Save Book
           </button>
-          <button onClick={onClose} className="py-3 px-6 rounded-[20px] border-[1.5px] border-bark/30 bg-transparent text-bark font-bold text-base cursor-pointer">
+          <button onClick={handleClose} className="py-3 px-6 rounded-[20px] border-[1.5px] border-bark/30 bg-transparent text-bark font-bold text-base cursor-pointer">
             Cancel
           </button>
         </div>

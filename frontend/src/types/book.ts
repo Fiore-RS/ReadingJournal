@@ -1,5 +1,6 @@
 export type BookFormat = "physical" | "digital";
 export type BookStatus = "tbr" | "reading" | "wishlist" | "finished";
+export type BookCategory = "book" | "novel" | "manga";
 
 export interface Book {
   id: string;
@@ -9,11 +10,13 @@ export interface Book {
   language: string;
   pages: number;
   status: BookStatus;
+  category: BookCategory;
   series: string | null;
   seriesOrder: number | null;
   favorite: boolean;
   progressPages: number;
   coverBg: string;
+  coverImage: string | null;
   reviewRating: number | null;
   reviewStartedAt: string | null;
   reviewFinishedAt: string | null;
@@ -31,10 +34,12 @@ export interface BookFormData {
   language: string;
   pages: number | string;
   status: BookStatus;
+  category: BookCategory;
   series: string;
   seriesOrder: number | string;
   favorite: boolean;
   coverBg: string;
+  coverImage: string | null;
 }
 
 export interface ReviewDraft {

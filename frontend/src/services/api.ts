@@ -1,4 +1,16 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+
+// The API serves uploaded images from its own origin (e.g. http://localhost:4000),
+// not under /api — this strips the /api suffix to get that origin.
+export const API_ORIGIN = API_URL.replace(/\/api\/?$/, "");
+
+// Turns a relative path like "/uploads/covers/xyz.jpg" (returned by the backend)
+// into a full URL the browser can load. Leaves absolute URLs untouched.
+export function resolveMediaUrl(path: string | null | undefined): string | undefined {
+  if (!path) return undefined;
+  if (/^https?:\/\//i.test(path)) return path;
+  return `${API_ORIGIN}${path}`;
+}
 
 export class ApiRequestError extends Error {
   status: number;

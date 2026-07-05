@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const bookFormatSchema = z.enum(["physical", "digital"]);
 export const bookStatusSchema = z.enum(["tbr", "reading", "wishlist", "finished"]);
+export const bookCategorySchema = z.enum(["book", "novel", "manga"]);
 
 export const createBookSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
@@ -10,10 +11,12 @@ export const createBookSchema = z.object({
   language: z.string().trim().min(1).default("English"),
   pages: z.coerce.number().int().min(0).default(0),
   status: bookStatusSchema.default("tbr"),
+  category: bookCategorySchema.default("book"),
   series: z.string().trim().min(1).nullable().optional(),
   seriesOrder: z.coerce.number().int().min(1).nullable().optional(),
   favorite: z.boolean().default(false),
   coverBg: z.string().trim().min(1).default("#a9c19a"),
+  coverImage: z.string().trim().min(1).nullable().optional(),
 });
 
 export const updateBookSchema = createBookSchema.partial();

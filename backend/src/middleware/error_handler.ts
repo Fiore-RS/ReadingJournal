@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction, RequestHandler } from "express";
 import { ZodError } from "zod";
+import multer from "multer";
 
 // Wraps async route handlers so thrown errors reach the error middleware
 // instead of crashing the process.
@@ -28,6 +29,17 @@ export function errorHandler(err: unknown, req: Request, res: Response, _next: N
   }
   if (err instanceof ApiError) {
     res.status(err.status).json({ error: err.message });
+    return;
+  }
+  if (err instanceof multer.MulterError) {
+    const message =
+      err.code === "LIMIT_FILE_SIZE" ? "Image is too large — max size is 5MB" : err.message;
+    res.status(400).json({ error: message });
+    return;
+  }
+  // multer's fileFilter rejects bad file types via a plain Error
+  if (err instanceof Error && /images are allowed/i.test(err.message)) {
+    res.status(400).json({ error: err.message });
     return;
   }
   console.error("Unhandled error:", err);

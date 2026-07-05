@@ -8,10 +8,17 @@ export default function Reading() {
   const { books, setProgress, setStatus, openEditBookModal, changeCurrentBook, openPickModal } = useLibrary();
   const [readingIndexRaw, setReadingIndexRaw] = useState(0);
   const [progressInput, setProgressInput] = useState("");
+  const [direction, setDirection] = useState<"left" | "right">("right");
 
   const readingBooks = books.filter((b) => b.status === "reading");
   const readingIndex = Math.max(0, Math.min(readingIndexRaw, readingBooks.length - 1));
   const current = readingBooks[readingIndex];
+
+  const goToIndex = (nextIndex: number, dir: "left" | "right") => {
+    setDirection(dir);
+    setReadingIndexRaw(nextIndex);
+    setProgressInput("");
+  };
 
   const progressPercent = current?.pages ? Math.min(100, Math.round(((current.progressPages || 0) / current.pages) * 100)) : 0;
 
@@ -41,15 +48,20 @@ export default function Reading() {
 
       {readingBooks.length > 0 && current ? (
         <>
-          <div className="flex items-center gap-2 w-full max-w-[920px] mt-4.5">
+          <div className="flex items-center gap-2 w-full max-w-[920px] mt-5">
             <button
-              onClick={() => setReadingIndexRaw((readingIndex - 1 + readingBooks.length) % readingBooks.length)}
-              className="flex-none w-[46px] h-[46px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-xl cursor-pointer text-latte"
+              onClick={() => goToIndex((readingIndex - 1 + readingBooks.length) % readingBooks.length, "left")}
+              className="flex-none w-[46px] h-[46px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-xl cursor-pointer text-latte transition-transform hover:-translate-x-0.5 active:scale-90"
             >
               ←
             </button>
 
-            <div className="flex-1 flex gap-9 bg-white rounded-[26px] p-8 shadow-[0_12px_30px_rgba(74,53,39,0.18)] relative animate-popin">
+            <div
+              key={current.id}
+              className={`flex-1 flex gap-9 bg-white rounded-[26px] p-8 shadow-[0_12px_30px_rgba(74,53,39,0.18)] relative ${
+                direction === "right" ? "motion-safe:animate-swipe-in-right" : "motion-safe:animate-swipe-in-left"
+              }`}
+            >
               <div className="absolute -top-2.5 left-10 w-[60px] h-6 bg-blush/85 -rotate-[4deg] rounded-sm shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
               <div className="flex-none w-[190px]">
                 <BookCard book={current} size="large" />
@@ -102,8 +114,8 @@ export default function Reading() {
             </div>
 
             <button
-              onClick={() => setReadingIndexRaw((readingIndex + 1) % readingBooks.length)}
-              className="flex-none w-[46px] h-[46px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-xl cursor-pointer text-latte"
+              onClick={() => goToIndex((readingIndex + 1) % readingBooks.length, "right")}
+              className="flex-none w-[46px] h-[46px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-xl cursor-pointer text-latte transition-transform hover:translate-x-0.5 active:scale-90"
             >
               →
             </button>
@@ -113,8 +125,8 @@ export default function Reading() {
             {readingBooks.map((b, i) => (
               <div
                 key={b.id}
-                onClick={() => { setReadingIndexRaw(i); setProgressInput(""); }}
-                className="w-[9px] h-[9px] rounded-full cursor-pointer"
+                onClick={() => goToIndex(i, i > readingIndex ? "right" : "left")}
+                className="w-[9px] h-[9px] rounded-full cursor-pointer transition-transform hover:scale-125"
                 style={{ background: i === readingIndex ? "#7d9d6e" : "rgba(139,105,74,0.25)" }}
               />
             ))}
@@ -123,8 +135,8 @@ export default function Reading() {
       ) : (
         <div className="text-center py-[60px] text-driftwood">
           <div className="text-[46px] mb-2.5">🌱</div>
-          <div className="text-lg mb-4.5">Nothing on your nightstand right now.</div>
-          <button onClick={handleChangeBook} className="py-3 px-5.5 rounded-[20px] border-none bg-sage text-parchment font-extrabold text-base cursor-pointer">
+          <div className="text-lg mb-5">Nothing on your nightstand right now.</div>
+          <button onClick={handleChangeBook} className="py-3 px-6 rounded-[20px] border-none bg-sage text-parchment font-extrabold text-base cursor-pointer">
             Start a Book
           </button>
         </div>

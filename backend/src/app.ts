@@ -5,6 +5,8 @@ import morgan from "morgan";
 import { env } from "../env";
 import booksRoutes from "./routes/books_routes";
 import seriesRoutes from "./routes/series_routes";
+import uploadsRoutes from "./routes/uploads_routes";
+import { UPLOADS_ROOT } from "./middleware/upload";
 import { notFoundHandler, errorHandler } from "./middleware/error_handler";
 
 export const app = express();
@@ -18,8 +20,21 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", service: "cozy-reading-journal-backend" });
 });
 
+// Serve uploaded cover images. helmet defaults to blocking cross-origin
+// resource loads, so we relax that just for this static folder — the
+// frontend (a different origin in dev) needs to load these in <img> tags.
+app.use(
+  "/uploads",
+  (_req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
+  express.static(UPLOADS_ROOT)
+);
+
 app.use("/api/books", booksRoutes);
 app.use("/api/series", seriesRoutes);
+app.use("/api/uploads", uploadsRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

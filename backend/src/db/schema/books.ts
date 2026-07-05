@@ -2,6 +2,7 @@ import { pgTable, text, integer, boolean, uuid, timestamp, pgEnum } from "drizzl
 
 export const bookFormatEnum = pgEnum("book_format", ["physical", "digital"]);
 export const bookStatusEnum = pgEnum("book_status", ["tbr", "reading", "wishlist", "finished"]);
+export const bookCategoryEnum = pgEnum("book_category", ["book", "novel", "manga"]);
 
 export const books = pgTable("books", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -12,6 +13,7 @@ export const books = pgTable("books", {
   language: text("language").notNull().default("English"),
   pages: integer("pages").notNull().default(0),
   status: bookStatusEnum("status").notNull().default("tbr"),
+  category: bookCategoryEnum("category").notNull().default("book"),
 
   series: text("series"),
   seriesOrder: integer("series_order"),
@@ -19,6 +21,7 @@ export const books = pgTable("books", {
   favorite: boolean("favorite").notNull().default(false),
   progressPages: integer("progress_pages").notNull().default(0),
   coverBg: text("cover_bg").notNull().default("#a9c19a"),
+  coverImage: text("cover_image"),
 
   // Review fields (null until the reader writes a review)
   reviewRating: integer("review_rating"),

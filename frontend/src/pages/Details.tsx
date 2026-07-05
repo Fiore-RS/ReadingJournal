@@ -30,9 +30,9 @@ export default function Details() {
   const favBtnLabel = book.favorite ? "♥ Favorited" : "♡ Add to Favorites";
 
   return (
-    <div className="w-full min-h-full flex items-start justify-center px-6 py-12">
-      <div className="flex gap-10 bg-parchment rounded-[26px] p-9.5 max-w-[820px] w-full shadow-[0_12px_30px_rgba(74,53,39,0.16)] relative">
-        <div className="absolute -top-2.5 right-[60px] w-14 h-5.5 bg-sage-soft/85 rotate-[5deg] shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
+    <div className="w-full min-h-full flex items-center justify-center px-6 py-12">
+      <div className="flex gap-10 bg-white rounded-[26px] p-10 max-w-[820px] w-full shadow-[0_12px_30px_rgba(74,53,39,0.16)] relative">
+        <div className="absolute -top-2.5 right-[60px] w-14 h-6 bg-sage-soft/85 rotate-[5deg] shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
         <div className="flex-none w-[210px]">
           <BookCard book={book} size="large" />
         </div>
@@ -48,6 +48,10 @@ export default function Details() {
             <div className="text-[17px] text-sand">by {book.author}</div>
           </div>
           <div className="grid grid-cols-2 gap-x-5 gap-y-3">
+            <div>
+              <div className="text-[13.5px] text-driftwood font-bold uppercase">Category</div>
+              <div className="text-[16.5px] text-clay capitalize">{book.category}</div>
+            </div>
             <div>
               <div className="text-[13.5px] text-driftwood font-bold uppercase">Format</div>
               <div className="text-[16.5px] text-clay">{book.format === "digital" ? "Digital" : "Physical"}</div>
@@ -65,6 +69,28 @@ export default function Details() {
               <div className="text-[16.5px] text-clay">{seriesLabel}</div>
             </div>
           </div>
+          {book.status === "finished" && (
+            <div className="flex gap-7 flex-wrap pt-3 border-t border-bark/10">
+              <div>
+                <div className="text-[13.5px] text-driftwood font-bold uppercase">Started</div>
+                <div className="text-[16.5px] text-clay">{book.reviewStartedAt || "—"}</div>
+              </div>
+              <div>
+                <div className="text-[13.5px] text-driftwood font-bold uppercase">Finished</div>
+                <div className="text-[16.5px] text-clay">{book.reviewFinishedAt || "—"}</div>
+              </div>
+              <div>
+                <div className="text-[13.5px] text-driftwood font-bold uppercase mb-1">Rating</div>
+                <div className="flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <span key={n} className="text-lg" style={{ color: n <= (book.reviewRating || 0) ? "#d9a05b" : "rgba(139,105,74,0.25)" }}>
+                      ★
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex gap-2.5 flex-wrap mt-auto pt-2.5">
             <button
               onClick={() => openEditBookModal(book)}
@@ -74,10 +100,10 @@ export default function Details() {
             </button>
             {book.status === "finished" && (
               <button
-                onClick={() => navigate(`/books/${book.id}/review`)}
+                onClick={() => navigate(book.reviewRating ? `/books/${book.id}/review/view` : `/books/${book.id}/review`)}
                 className="py-2.5 px-5 rounded-[20px] border-[1.5px] border-bark/30 bg-transparent text-bark font-bold text-[15.5px] cursor-pointer"
               >
-                {book.reviewRating ? "Edit Review" : "Write Review"}
+                {book.reviewRating ? "View Review" : "Write Review"}
               </button>
             )}
             <button

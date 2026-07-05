@@ -16,7 +16,7 @@ export default function NewSeriesModal({ name, onChange, onConfirm, onClose }: N
         placeholder="Series name"
         value={name}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full py-2.5 px-3.5 rounded-2xl border-[1.5px] border-bark/25 mb-4.5 text-base"
+        className="w-full py-2.5 px-3.5 rounded-2xl border-[1.5px] border-bark/25 mb-5 text-base"
       />
       <div className="flex gap-2.5">
         <button onClick={onConfirm} className="py-3 px-6 rounded-[20px] border-none bg-sage text-parchment font-extrabold text-base cursor-pointer">

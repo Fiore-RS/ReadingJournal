@@ -18,8 +18,9 @@ export function useLibraryStore() {
       mode: "add",
       formData: {
         title: "", author: "", format: "physical", language: "English", pages: "",
-        status: defaultStatus, series: "", seriesOrder: "", favorite: false,
+        status: defaultStatus, category: "book", series: "", seriesOrder: "", favorite: false,
         coverBg: COVER_PALETTE[Math.floor(Math.random() * COVER_PALETTE.length)],
+        coverImage: null,
       },
     });
   };
@@ -30,8 +31,8 @@ export function useLibraryStore() {
       mode: "edit",
       formData: {
         id: book.id, title: book.title, author: book.author, format: book.format, language: book.language,
-        pages: book.pages, status: book.status, series: book.series || "", seriesOrder: book.seriesOrder || "",
-        favorite: !!book.favorite, coverBg: book.coverBg,
+        pages: book.pages, status: book.status, category: book.category, series: book.series || "", seriesOrder: book.seriesOrder || "",
+        favorite: !!book.favorite, coverBg: book.coverBg, coverImage: book.coverImage,
       },
     });
   };

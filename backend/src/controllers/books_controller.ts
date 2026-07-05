@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "../db/connection";
 import { books } from "../db/schema/books";
 import { asyncHandler, ApiError } from "../middleware/error_handler";
+import { deleteUploadedFile } from "../middleware/upload";
 import {
   createBookSchema,
   updateBookSchema,
@@ -38,12 +39,21 @@ export const createBook = asyncHandler(async (req: Request, res: Response) => {
 // PUT /api/books/:id
 export const updateBook = asyncHandler(async (req: Request, res: Response) => {
   const data = updateBookSchema.parse(req.body);
+  const [existing] = await db.select().from(books).where(eq(books.id, req.params.id));
+  if (!existing) throw new ApiError(404, "Book not found");
+
   const [updated] = await db
     .update(books)
     .set({ ...data, updatedAt: new Date() })
     .where(eq(books.id, req.params.id))
     .returning();
-  if (!updated) throw new ApiError(404, "Book not found");
+
+  // If the cover image changed (new upload, or removed), delete the old
+  // file from disk now that nothing references it anymore.
+  if ("coverImage" in data && existing.coverImage && existing.coverImage !== updated.coverImage) {
+    deleteUploadedFile(existing.coverImage);
+  }
+
   res.json(updated);
 });
 
@@ -51,6 +61,7 @@ export const updateBook = asyncHandler(async (req: Request, res: Response) => {
 export const deleteBook = asyncHandler(async (req: Request, res: Response) => {
   const [deleted] = await db.delete(books).where(eq(books.id, req.params.id)).returning();
   if (!deleted) throw new ApiError(404, "Book not found");
+  if (deleted.coverImage) deleteUploadedFile(deleted.coverImage);
   res.status(204).send();
 });
 

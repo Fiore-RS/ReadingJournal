@@ -15,6 +15,7 @@ export default function ModalRoot() {
   if (modal.type === "bookForm") {
     return (
       <BookFormModal
+        key={modal.mode === "edit" ? modal.formData.id : "add"}
         mode={modal.mode}
         formData={modal.formData}
         onChange={patchFormData}

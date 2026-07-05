@@ -31,8 +31,8 @@ export default function Review() {
 
   return (
     <div className="w-full min-h-full flex items-start justify-center px-6 py-12">
-      <div className="bg-parchment rounded-[26px] p-9.5 max-w-[640px] w-full shadow-[0_12px_30px_rgba(74,53,39,0.16)] relative">
-        <div className="absolute -top-2.5 left-11 w-14 h-5.5 bg-[#d9c79a]/85 -rotate-[5deg] shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
+      <div className="bg-parchment rounded-[26px] p-10 max-w-[640px] w-full shadow-[0_12px_30px_rgba(74,53,39,0.16)] relative">
+        <div className="absolute -top-2.5 left-11 w-14 h-6 bg-[#d9c79a]/85 -rotate-[5deg] shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
         <div className="flex items-center gap-4 mb-2">
           <span className="text-[32px]">📝</span>
           <div>
@@ -43,7 +43,7 @@ export default function Review() {
           </div>
         </div>
 
-        <div className="flex gap-1.5 my-4.5">
+        <div className="flex gap-1.5 my-5">
           {[1, 2, 3, 4, 5].map((n) => (
             <span
               key={n}
@@ -99,7 +99,7 @@ export default function Review() {
           />
         </div>
 
-        <div className="flex items-center gap-2.5 mb-5.5">
+        <div className="flex items-center gap-2.5 mb-6">
           <input type="checkbox" checked={draft.favorite} onChange={(e) => patch({ favorite: e.target.checked })} className="w-[18px] h-[18px]" />
           <label className="text-[15.5px] text-bark">Add to Top Favorites 💚</label>
         </div>

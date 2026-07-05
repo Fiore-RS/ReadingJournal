@@ -1,4 +1,5 @@
 import type { Book } from "../types/book.js";
+import { resolveMediaUrl } from "../services/api.js";
 
 interface BookCardProps {
   book: Partial<Book>;
@@ -19,6 +20,8 @@ export default function BookCard({ book, onClick, size = "normal", metaMode }: B
   const formatLabel = book.format === "digital" ? "Digital" : "Physical";
   const stripeAngle = ((book.title || "").length * 13) % 180;
   const coverStripes = `repeating-linear-gradient(${stripeAngle}deg, rgba(255,255,255,0.10) 0px, rgba(255,255,255,0.10) 6px, transparent 6px, transparent 16px)`;
+  const imageUrl = resolveMediaUrl(book.coverImage);
+  const categoryLabel = book.category === "manga" ? "Manga" : book.category === "novel" ? "Novel" : null;
 
   let metaLine1 = "";
   let metaLine2 = "";
@@ -37,9 +40,13 @@ export default function BookCard({ book, onClick, size = "normal", metaMode }: B
     >
       <div
         className="relative w-full aspect-[2/3] rounded-[14px] overflow-hidden shadow-[0_6px_14px_rgba(74,53,39,0.28),inset_-6px_0_12px_rgba(0,0,0,0.12)]"
-        style={{ background: book.coverBg || "#a9c19a" }}
+        style={{ background: imageUrl ? undefined : book.coverBg || "#a9c19a" }}
       >
-        <div className="absolute inset-0 opacity-50" style={{ background: coverStripes }} />
+        {imageUrl ? (
+          <img src={imageUrl} alt={book.title || "Book cover"} className="absolute inset-0 w-full h-full object-cover" />
+        ) : (
+          <div className="absolute inset-0 opacity-50" style={{ background: coverStripes }} />
+        )}
         <div className="absolute left-0 top-0 bottom-0 w-[9px] bg-black/20" />
         {!!book.favorite && (
           <div
@@ -54,6 +61,11 @@ export default function BookCard({ book, onClick, size = "normal", metaMode }: B
           <div className="font-body text-[13.5px] text-[#e9dcc4] mt-0.5 opacity-90 truncate">
             {book.author || "Unknown author"}
           </div>
+          {!!categoryLabel && (
+            <span className="inline-block mt-1 px-1.5 py-0.5 rounded-full bg-white/20 text-[10px] font-bold text-[#faf3e6] uppercase tracking-wide">
+              {categoryLabel}
+            </span>
+          )}
         </div>
         <div
           className="absolute top-2 left-2 w-6 h-6 rounded-full bg-[#faf3e6]/90 flex items-center justify-center text-sm"

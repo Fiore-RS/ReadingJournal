@@ -33,11 +33,21 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
+        "swipe-in-right": {
+          from: { opacity: 0, transform: "translateX(56px) scale(0.97)" },
+          to: { opacity: 1, transform: "translateX(0) scale(1)" },
+        },
+        "swipe-in-left": {
+          from: { opacity: 0, transform: "translateX(-56px) scale(0.97)" },
+          to: { opacity: 1, transform: "translateX(0) scale(1)" },
+        },
       },
       animation: {
         fadein: "fadein 0.2s ease",
         popin: "popin 0.25s ease",
         floaty: "floaty 5s ease-in-out infinite",
+        "swipe-in-right": "swipe-in-right 1.5s cubic-bezier(0.22,1,0.36,1)",
+        "swipe-in-left": "swipe-in-left 1.5s cubic-bezier(0.22,1,0.36,1)",
       },
     },
   },

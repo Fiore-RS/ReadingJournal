@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Book } from "../types/book.js";
+import type { Book, BookCategory } from "../types/book.js";
 import BookCard from "./BookCard.js";
 
 interface BookShelfProps {
@@ -12,13 +12,22 @@ interface BookShelfProps {
   emptyText: string;
 }
 
+const CATEGORY_FILTERS: { value: BookCategory | "all"; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "book", label: "📘 Books" },
+  { value: "novel", label: "📗 Novels" },
+  { value: "manga", label: "📓 Manga" },
+];
+
 export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddClick, onOpenBook, emptyText }: BookShelfProps) {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"title" | "author">("title");
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<BookCategory | "all">("all");
 
   const q = search.trim().toLowerCase();
   const filtered = books
+    .filter((b) => categoryFilter === "all" || b.category === categoryFilter)
     .filter((b) => !q || b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
     .sort((a, b) => (sortBy === "author" ? a.author : a.title).localeCompare(sortBy === "author" ? b.author : b.title));
 
@@ -81,6 +90,23 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
         )}
       </div>
 
+      <div className="flex items-center gap-2 mb-6 flex-wrap">
+        {CATEGORY_FILTERS.map((f) => (
+          <button
+            key={f.value}
+            onClick={() => setCategoryFilter(f.value)}
+            className="py-1.5 px-3.5 rounded-full border-[1.5px] font-body font-bold text-[13.5px] cursor-pointer transition-colors"
+            style={{
+              borderColor: categoryFilter === f.value ? "#7d9d6e" : "rgba(139,105,74,0.25)",
+              background: categoryFilter === f.value ? "#7d9d6e" : "transparent",
+              color: categoryFilter === f.value ? "#fbf5e9" : "#5c4632",
+            }}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       {hasBooks ? (
         <div
           className="grid gap-x-[22px] gap-y-7 py-[26px] px-5 rounded-[20px]"
@@ -96,8 +122,14 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
         </div>
       ) : (
         <div className="text-center py-[70px] text-driftwood font-body">
-          <div className="text-5xl mb-3">{q ? "🔍" : "🌿"}</div>
-          <div className="text-lg">{q ? "No books match your search." : emptyText}</div>
+          <div className="text-5xl mb-3">{q || categoryFilter !== "all" ? "🔍" : "🌿"}</div>
+          <div className="text-lg">
+            {q
+              ? "No books match your search."
+              : categoryFilter !== "all"
+              ? `No ${categoryFilter}s here yet.`
+              : emptyText}
+          </div>
         </div>
       )}
     </div>

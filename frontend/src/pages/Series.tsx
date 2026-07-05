@@ -35,7 +35,7 @@ export default function Series() {
 
   return (
     <div className="w-full px-12 pt-9 pb-16">
-      <div className="flex items-center gap-3.5 mb-5.5 flex-wrap">
+      <div className="flex items-center gap-3.5 mb-6 flex-wrap">
         <span className="text-[36px]">🩷</span>
         <h1 className="font-display text-5xl font-semibold text-clay m-0">Series &amp; Standalones</h1>
         <div className="ml-auto flex gap-3">
@@ -79,7 +79,7 @@ export default function Series() {
               ))}
             </div>
           ) : (
-            <div className="p-5.5 rounded-[18px] bg-bark/[0.06] text-driftwood text-base">No books in this series yet.</div>
+            <div className="p-6 rounded-[18px] bg-bark/[0.06] text-driftwood text-base">No books in this series yet.</div>
           )}
         </div>
       ))}
