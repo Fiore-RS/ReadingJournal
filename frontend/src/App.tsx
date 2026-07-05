@@ -5,9 +5,6 @@ import Landing from "./pages/Landing.js";
 import ShelfPage from "./pages/ShelfPage.js";
 import Series from "./pages/Series.js";
 import Reading from "./pages/Reading.js";
-import Details from "./pages/Details.js";
-import Review from "./pages/Review.js";
-import ReviewView from "./pages/ReviewView.js";
 import Reviews from "./pages/Reviews.js";
 
 export default function App() {
@@ -26,9 +23,6 @@ export default function App() {
               <Route path="/reviews" element={<Reviews />} />
               <Route path="/series" element={<Series />} />
               <Route path="/reading" element={<Reading />} />
-              <Route path="/books/:id" element={<Details />} />
-              <Route path="/books/:id/review" element={<Review />} />
-              <Route path="/books/:id/review/view" element={<ReviewView />} />
             </Route>
           </Routes>
         </div>

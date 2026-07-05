@@ -1,11 +1,9 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../context/LibraryContext.js";
 import BookCard from "../components/BookCard.js";
 
 export default function Series() {
-  const navigate = useNavigate();
-  const { books, extraSeries, setModal, openPickModal, openEditBookModal } = useLibrary();
+  const { books, extraSeries, setModal, openPickModal, openEditBookModal, openDetailsModal } = useLibrary();
   const [search, setSearch] = useState("");
 
   const q = search.trim().toLowerCase();
@@ -75,7 +73,7 @@ export default function Series() {
           {section.books.length > 0 ? (
             <div className="flex gap-9 flex-wrap p-5 rounded-[18px] bg-bark/[0.06]">
               {section.books.map((book) => (
-                <BookCard key={book.id} book={book} onClick={() => navigate(`/books/${book.id}`)} metaMode="series" />
+                <BookCard key={book.id} book={book} onClick={() => openDetailsModal(book.id)} metaMode="series" />
               ))}
             </div>
           ) : (

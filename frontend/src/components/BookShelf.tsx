@@ -95,7 +95,7 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
           <button
             key={f.value}
             onClick={() => setCategoryFilter(f.value)}
-            className="py-1.5 px-3.5 rounded-full border-[1.5px] font-body font-bold text-[13.5px] cursor-pointer transition-colors"
+            className="py-2.5 px-[22px] rounded-full border-[1.5px] font-body font-extrabold text-base cursor-pointer transition-colors"
             style={{
               borderColor: categoryFilter === f.value ? "#7d9d6e" : "rgba(139,105,74,0.25)",
               background: categoryFilter === f.value ? "#7d9d6e" : "transparent",

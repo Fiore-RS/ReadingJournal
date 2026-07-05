@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../context/LibraryContext.js";
 import BookShelf from "../components/BookShelf.js";
 import type { Book, BookStatus } from "../types/book.js";
@@ -57,8 +56,7 @@ const CONFIGS: Record<string, ShelfPageConfig> = {
 };
 
 export default function ShelfPage({ variant }: { variant: keyof typeof CONFIGS }) {
-  const navigate = useNavigate();
-  const { books, openAddBookModal, setModal, openPickModal, setFavorite, closeModal } = useLibrary();
+  const { books, openAddBookModal, setModal, openPickModal, setFavorite, closeModal, openDetailsModal } = useLibrary();
   const config = CONFIGS[variant];
 
   const handleAdd = () => {
@@ -79,7 +77,7 @@ export default function ShelfPage({ variant }: { variant: keyof typeof CONFIGS }
       pageIcon={config.icon}
       addLabel={config.addLabel}
       onAddClick={config.addLabel ? handleAdd : undefined}
-      onOpenBook={(book) => navigate(`/books/${book.id}`)}
+      onOpenBook={(book) => openDetailsModal(book.id)}
       emptyText={config.emptyText}
     />
   );

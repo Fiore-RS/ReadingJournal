@@ -3,10 +3,13 @@ import BookFormModal from "./BookFormModal.js";
 import ChoiceModal from "./ChoiceModal.js";
 import PickModal from "./PickModal.js";
 import NewSeriesModal from "./NewSeriesModal.js";
+import BookDetailsModal from "./BookDetailsModal.js";
+import ReviewViewModal from "./ReviewViewModal.js";
+import ReviewEditModal from "./ReviewEditModal.js";
 
 export default function ModalRoot() {
   const {
-    modal, setModal, closeModal, patchFormData, saveBookForm, confirmNewSeries,
+    modal, setModal, closeModal, closeBookForm, patchFormData, saveBookForm, confirmNewSeries,
     books, openAddBookModal, openPickModal, setStatus,
   } = useLibrary();
 
@@ -20,7 +23,7 @@ export default function ModalRoot() {
         formData={modal.formData}
         onChange={patchFormData}
         onSave={saveBookForm}
-        onClose={closeModal}
+        onClose={closeBookForm}
       />
     );
   }
@@ -62,6 +65,18 @@ export default function ModalRoot() {
         onClose={closeModal}
       />
     );
+  }
+
+  if (modal.type === "bookDetails") {
+    return <BookDetailsModal key={modal.bookId} bookId={modal.bookId} />;
+  }
+
+  if (modal.type === "reviewView") {
+    return <ReviewViewModal key={modal.bookId} bookId={modal.bookId} />;
+  }
+
+  if (modal.type === "reviewEdit") {
+    return <ReviewEditModal key={modal.bookId} bookId={modal.bookId} />;
   }
 
   return null;

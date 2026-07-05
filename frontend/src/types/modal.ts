@@ -5,6 +5,9 @@ export type ModalState =
   | { type: "addChoice" }
   | { type: "pickExisting"; title: string; search: string; filterFn: (b: Book) => boolean; onPick: (b: Book) => void }
   | { type: "newSeries"; name: string }
+  | { type: "bookDetails"; bookId: string }
+  | { type: "reviewView"; bookId: string }
+  | { type: "reviewEdit"; bookId: string }
   | null;
 
 export type { BookStatus };

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../context/LibraryContext.js";
 import BookCard from "../components/BookCard.js";
 
 export default function Reading() {
-  const navigate = useNavigate();
-  const { books, setProgress, setStatus, openEditBookModal, changeCurrentBook, openPickModal } = useLibrary();
+  const { books, setProgress, setStatus, openEditBookModal, changeCurrentBook, openPickModal, openReviewEditModal } = useLibrary();
   const [readingIndexRaw, setReadingIndexRaw] = useState(0);
   const [progressInput, setProgressInput] = useState("");
   const [direction, setDirection] = useState<"left" | "right">("right");
@@ -33,7 +31,7 @@ export default function Reading() {
   const handleMarkFinished = async () => {
     if (!current) return;
     await setStatus(current.id, "finished", current.pages);
-    navigate(`/books/${current.id}/review`, { state: { fromReading: true } });
+    openReviewEditModal(current.id);
   };
 
   const handleChangeBook = () => {

@@ -20,7 +20,7 @@ export default function Landing() {
         />
 
         <div className="text-center max-w-[640px]">
-          <h1 className="font-display font-bold text-[58px] text-clay mb-3.5 leading-[1.05]">My Cozy Reading Journal</h1>
+          <h1 className="font-display font-bold text-[58px] text-clay mb-3.5 leading-[1.05]">My Reading Journal</h1>
           <p className="font-body text-xl text-sand mb-7 leading-relaxed">
             A little nook to keep every story you've read, are reading, and can't wait to start — wrapped up in warm
             pages and soft green ribbons.

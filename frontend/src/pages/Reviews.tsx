@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../context/LibraryContext.js";
 import BookCard from "../components/BookCard.js";
 import type { Book } from "../types/book.js";
@@ -9,8 +8,7 @@ function hasReview(book: Book) {
 }
 
 export default function Reviews() {
-  const navigate = useNavigate();
-  const { books } = useLibrary();
+  const { books, openReviewViewModal } = useLibrary();
 
   const reviewed = useMemo(
     () =>
@@ -35,7 +33,7 @@ export default function Reviews() {
           {reviewed.map((book) => (
             <div
               key={book.id}
-              onClick={() => navigate(`/books/${book.id}/review/view`)}
+              onClick={() => openReviewViewModal(book.id)}
               className="flex gap-4 bg-white rounded-[22px] p-4 shadow-[0_8px_20px_rgba(74,53,39,0.14)] cursor-pointer transition-transform hover:-translate-y-1 overflow-hidden"
             >
               <div className="flex-none">

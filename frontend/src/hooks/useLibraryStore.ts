@@ -41,6 +41,10 @@ export function useLibraryStore() {
     setModal({ type: "pickExisting", title, filterFn, onPick, search: "" });
   };
 
+  const openDetailsModal = (bookId: string) => setModal({ type: "bookDetails", bookId });
+  const openReviewViewModal = (bookId: string) => setModal({ type: "reviewView", bookId });
+  const openReviewEditModal = (bookId: string) => setModal({ type: "reviewEdit", bookId });
+
   const closeModal = () => setModal(null);
 
   const patchFormData = (patch: Partial<BookFormData>) => {
@@ -51,8 +55,24 @@ export function useLibraryStore() {
     if (!modal || modal.type !== "bookForm") return;
     const fd = modal.formData;
     if (!fd.title.trim()) return;
-    await data.saveBook(fd);
-    closeModal();
+    const wasEditing = modal.mode === "edit";
+    const saved = await data.saveBook(fd);
+    if (wasEditing) {
+      setModal({ type: "bookDetails", bookId: saved.id });
+    } else {
+      closeModal();
+    }
+  };
+
+  // Cancelling out of the book form: if we were editing an existing book,
+  // land back on its details modal (matching what "Save" does); if we were
+  // adding a brand new one, there's no book to show yet, so just close.
+  const closeBookForm = () => {
+    if (modal && modal.type === "bookForm" && modal.mode === "edit" && modal.formData.id) {
+      setModal({ type: "bookDetails", bookId: modal.formData.id });
+    } else {
+      closeModal();
+    }
   };
 
   const confirmNewSeries = async () => {
@@ -70,7 +90,11 @@ export function useLibraryStore() {
     openAddBookModal,
     openEditBookModal,
     openPickModal,
+    openDetailsModal,
+    openReviewViewModal,
+    openReviewEditModal,
     closeModal,
+    closeBookForm,
     patchFormData,
     saveBookForm,
     confirmNewSeries,
