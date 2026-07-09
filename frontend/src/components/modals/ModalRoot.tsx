@@ -6,6 +6,7 @@ import NewSeriesModal from "./NewSeriesModal.js";
 import BookDetailsModal from "./BookDetailsModal.js";
 import ReviewViewModal from "./ReviewViewModal.js";
 import ReviewEditModal from "./ReviewEditModal.js";
+import YearDetailModal from "./YearDetailModal.js";
 
 export default function ModalRoot() {
   const {
@@ -77,6 +78,10 @@ export default function ModalRoot() {
 
   if (modal.type === "reviewEdit") {
     return <ReviewEditModal key={modal.bookId} bookId={modal.bookId} />;
+  }
+
+  if (modal.type === "yearDetail") {
+    return <YearDetailModal key={modal.year} year={modal.year} />;
   }
 
   return null;

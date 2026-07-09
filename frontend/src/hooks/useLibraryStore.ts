@@ -44,6 +44,7 @@ export function useLibraryStore() {
   const openDetailsModal = (bookId: string) => setModal({ type: "bookDetails", bookId });
   const openReviewViewModal = (bookId: string) => setModal({ type: "reviewView", bookId });
   const openReviewEditModal = (bookId: string) => setModal({ type: "reviewEdit", bookId });
+  const openYearDetailModal = (year: string) => setModal({ type: "yearDetail", year });
 
   const closeModal = () => setModal(null);
 
@@ -93,6 +94,7 @@ export function useLibraryStore() {
     openDetailsModal,
     openReviewViewModal,
     openReviewEditModal,
+    openYearDetailModal,
     closeModal,
     closeBookForm,
     patchFormData,

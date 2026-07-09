@@ -48,19 +48,6 @@ export default function ReviewViewModal({ bookId }: { bookId: string }) {
               <div className="text-[13.5px] text-driftwood font-bold uppercase">Finished</div>
               <div className="text-[16.5px] text-clay">{book.reviewFinishedAt || "—"}</div>
             </div>
-            {!!book.reviewFavoriteCharacter && (
-              <div className="col-span-2">
-                <div className="text-[13.5px] text-driftwood font-bold uppercase">Favorite Character</div>
-                <div className="text-[16.5px] text-clay">{book.reviewFavoriteCharacter}</div>
-              </div>
-            )}
-          </div>
-
-          <div>
-            <div className="text-[13.5px] text-driftwood font-bold uppercase mb-1.5">My Thoughts</div>
-            <p className="text-[15.5px] text-clay leading-relaxed whitespace-pre-wrap">
-              {book.reviewThoughts || "No thoughts recorded yet."}
-            </p>
           </div>
 
           <div className="flex gap-2.5 flex-wrap mt-auto pt-2.5">

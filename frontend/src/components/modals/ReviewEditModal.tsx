@@ -77,28 +77,6 @@ export default function ReviewEditModal({ bookId }: { bookId: string }) {
         </div>
       </div>
 
-      <div className="mb-4">
-        <label className="text-sm font-bold text-sand uppercase">Favorite Character</label>
-        <input
-          type="text"
-          placeholder="Who stole the show?"
-          value={draft.favoriteCharacter}
-          onChange={(e) => patch({ favoriteCharacter: e.target.value })}
-          className="w-full py-2.5 px-3 rounded-xl border-[1.5px] border-bark/28 mt-1 text-[15.5px] text-clay"
-        />
-      </div>
-
-      <div className="mb-5">
-        <label className="text-sm font-bold text-sand uppercase">My Thoughts</label>
-        <textarea
-          placeholder="How did this story make you feel?"
-          value={draft.thoughts}
-          onChange={(e) => patch({ thoughts: e.target.value })}
-          rows={5}
-          className="w-full p-3 rounded-2xl border-[1.5px] border-bark/28 mt-1 text-[15.5px] text-clay resize-y"
-        />
-      </div>
-
       <div className="flex items-center gap-2.5 mb-6">
         <input type="checkbox" checked={draft.favorite} onChange={(e) => patch({ favorite: e.target.checked })} className="w-[18px] h-[18px]" />
         <label className="text-[15.5px] text-bark">Add to Top Favorites 💚</label>

@@ -8,6 +8,7 @@ export type ModalState =
   | { type: "bookDetails"; bookId: string }
   | { type: "reviewView"; bookId: string }
   | { type: "reviewEdit"; bookId: string }
+  | { type: "yearDetail"; year: string }
   | null;
 
 export type { BookStatus };

@@ -20,7 +20,7 @@ function StatCard({ icon, label, value, sub }: StatCardProps) {
 }
 
 export default function Stats() {
-  const { books } = useLibrary();
+  const { books, openYearDetailModal } = useLibrary();
 
   const stats = useMemo(() => {
     const tbrCount = books.filter((b) => b.status === "tbr").length;
@@ -44,6 +44,16 @@ export default function Stats() {
       else inProgressSeries += 1;
     });
 
+    // Books finished per year, based on the review's "finished" date.
+    const yearCounts = new Map<string, number>();
+    finished.forEach((b) => {
+      if (!b.reviewFinishedAt) return;
+      const year = b.reviewFinishedAt.slice(0, 4);
+      yearCounts.set(year, (yearCounts.get(year) || 0) + 1);
+    });
+    const yearsSorted = Array.from(yearCounts.entries())
+      .sort((a, b) => b[0].localeCompare(a[0])); // most recent year first
+
     return {
       tbrCount,
       wishlistCount,
@@ -53,6 +63,7 @@ export default function Stats() {
       completedSeries,
       inProgressSeries,
       totalSeries: seriesNames.length,
+      yearsSorted,
     };
   }, [books]);
 
@@ -82,6 +93,30 @@ export default function Stats() {
           sub={`${stats.completedSeries} completed · ${stats.inProgressSeries} in progress`}
         />
       </div>
+
+      {stats.yearsSorted.length > 0 && (
+        <div className="mt-10">
+          <div className="flex items-baseline gap-2.5 mb-4">
+            <div className="w-[30px] h-1.5 rounded-full bg-sage-soft" />
+            <h2 className="font-display text-2xl font-semibold text-clay m-0">Finished by Year</h2>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {stats.yearsSorted.map(([year, count]) => (
+              <button
+                key={year}
+                onClick={() => openYearDetailModal(year)}
+                className="bg-white rounded-[22px] p-6 shadow-[0_8px_20px_rgba(74,53,39,0.12)] flex flex-col gap-2 text-left cursor-pointer transition-transform hover:-translate-y-1"
+              >
+                <div className="text-[32px]">📅</div>
+                <div className="font-display text-4xl font-semibold text-clay leading-none">{year}</div>
+                <div className="font-body text-base text-sand font-bold">
+                  {count} book{count === 1 ? "" : "s"} finished
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
