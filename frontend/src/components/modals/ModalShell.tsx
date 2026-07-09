@@ -12,7 +12,7 @@ export default function ModalShell({ onClose, maxWidth = 420, bgClassName = "bg-
   return (
     <div
       onClick={onClose}
-      className="absolute inset-0 bg-clay/40 flex items-center justify-center z-[100] animate-fadein p-6"
+      className="fixed inset-0 bg-clay/40 flex items-center justify-center z-[100] animate-fadein p-6"
     >
       <div
         onClick={(e) => e.stopPropagation()}

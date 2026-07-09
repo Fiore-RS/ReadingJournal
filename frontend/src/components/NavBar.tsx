@@ -2,13 +2,14 @@ import { Link, useLocation } from "react-router-dom";
 
 export const NAV_ITEMS = [
   { path: "/library", label: "Library", icon: "📚" },
-  { path: "/reading", label: "Currently Reading", icon: "🔖" },
+  //{ path: "/reading", label: "Currently Reading", icon: "🔖" },
+  { path: "/finished", label: "Finished", icon: "🍃" },
   { path: "/tbr", label: "To Be Read", icon: "📖" },
   { path: "/wishlist", label: "Wishlist", icon: "✨" },
-  { path: "/finished", label: "Finished", icon: "🍃" },
   { path: "/favorites", label: "Top Favorites", icon: "💚" },
   { path: "/reviews", label: "Reviews", icon: "📝" },
   { path: "/series", label: "Series", icon: "🩷" },
+  { path: "/stats", label: "Stats", icon: "📊" },
 ];
 
 export function LandingNav() {

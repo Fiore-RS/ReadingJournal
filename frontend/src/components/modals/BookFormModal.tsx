@@ -124,7 +124,14 @@ export default function BookFormModal({ mode, formData, onChange, onSave, onClos
         <div className="flex gap-3.5">
           <div className="flex-1">
             <label className={labelClass}>Language</label>
-            <input type="text" value={formData.language} onChange={(e) => onChange({ language: e.target.value })} className={inputClass} />
+            <select
+              value={formData.language}
+              onChange={(e) => onChange({ language: e.target.value })}
+              className="w-full py-2.5 px-3 rounded-xl border-[1.5px] border-bark/25 mt-1 text-base bg-white"
+            >
+              <option value="English">English</option>
+              <option value="Spanish">Spanish</option>
+            </select>
           </div>
           <div className="flex-1">
             <label className={labelClass}>Pages</label>
