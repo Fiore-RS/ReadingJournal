@@ -7,7 +7,10 @@ const envSchema = z.object({
   DATABASE_URL: z
     .string()
     .min(1, "DATABASE_URL is required — copy your Neon connection string into .env"),
-  CORS_ORIGIN: z.string().default("http://localhost:5173"),
+  CORS_ORIGIN: z
+  .string()
+  .default("http://localhost:5173")
+  .transform((val) => val.split(",").map((origin) => origin.trim())),
 });
 
 const parsed = envSchema.safeParse(process.env);

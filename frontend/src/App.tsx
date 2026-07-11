@@ -11,7 +11,7 @@ import Stats from "./pages/Stats.js";
 export default function App() {
   return (
     <LibraryProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/ReadingJournal">
         <div className="w-full h-screen overflow-hidden bg-cream font-body flex flex-col relative">
           <Routes>
             <Route path="/" element={<Landing />} />
