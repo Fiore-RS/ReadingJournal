@@ -1,79 +1,183 @@
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useLibrary } from "../context/LibraryContext.js";
+import { resolveMediaUrl } from "../services/api.js";
+import type { Book } from "../types/book.js";
 
-export default function Landing() {
+// Fixed slots for the floating finished-book covers around the hero book.
+// top/left/right are percentages of the scene; size is the cover width in px.
+const FLOAT_POSITIONS = [
+  { top: "0%", left: "2%", rotate: -9, size: 92 },
+  { top: "38%", left: "-4%", rotate: 6, size: 106 },
+  { top: "76%", left: "6%", rotate: -5, size: 84 },
+  { top: "0%", right: "2%", rotate: 8, size: 96 },
+  { top: "40%", right: "-4%", rotate: -7, size: 108 },
+  { top: "78%", right: "8%", rotate: 5, size: 86 },
+] as const;
+
+function pickRandom<T>(arr: T[], count: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
+function FloatingCover({ book, slot, delay }: { book: Book; slot: (typeof FLOAT_POSITIONS)[number]; delay: number }) {
+  const imageUrl = resolveMediaUrl(book.coverImage);
   return (
     <div
-      className="w-full h-full flex flex-col"
-      style={{ background: "radial-gradient(ellipse at 30% 20%, #fbf5e9 0%, #f6efe2 55%, #ead9bd 100%)" }}
+      className="absolute rounded-lg overflow-hidden shadow-[0_10px_20px_rgba(74,53,39,0.22)] opacity-90 animate-floaty"
+      style={{
+        top: slot.top,
+        left: "left" in slot ? slot.left : undefined,
+        right: "right" in slot ? slot.right : undefined,
+        width: slot.size,
+        height: slot.size * 1.5,
+        transform: `rotate(${slot.rotate}deg)`,
+        animationDelay: `${delay}s`,
+        background: imageUrl ? undefined : book.coverBg,
+      }}
+      title={book.title}
     >
-      <div className="flex-1 flex items-center px-8 md:px-16">
-        <div className="w-full max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-[1fr_auto] gap-14 items-center">
-
-          {/* Texto, anclado abajo-izquierda */}
-          <div className="text-center md:text-left self-end md:pb-10 relative z-10">
-            <span className="inline-block font-body text-xs tracking-[0.22em] uppercase text-sage font-bold mb-4">
-              Guardá cada historia
-            </span>
-            <h1 className="font-display font-bold text-[46px] md:text-[56px] text-clay mb-3.5 leading-[1.05]">
-              My Reading
-              <br />
-              Journal
-            </h1>
-            <p className="font-body text-lg text-sand mb-8 leading-relaxed max-w-[380px] mx-auto md:mx-0">
-              Un lugar para guardar cada historia que leíste, la que estás leyendo, y la que no ves la hora de
-              empezar.
-            </p>
-            <Link
-              to="/library"
-              className="inline-block py-[15px] px-[34px] rounded-[26px] bg-sage text-parchment font-extrabold text-xl shadow-[0_8px_18px_rgba(125,157,110,0.35)] transition-transform hover:-translate-y-0.5"
-            >
-              Abrir mi biblioteca →
-            </Link>
-          </div>
-
-          {/* Abanico de tarjetas de libro */}
-          <div className="relative w-[280px] h-[340px] mx-auto md:mx-0 hidden sm:block">
-            <div className="absolute -top-8 -left-6 text-3xl opacity-45 animate-floaty">🍂</div>
-
-            {/* Tarjeta trasera */}
-            <div className="absolute top-4 left-8 w-[190px] h-[260px] bg-parchment rounded-2xl rotate-[10deg] shadow-[0_14px_24px_rgba(0,0,0,0.10)] border border-clay/10" />
-
-            {/* Tarjeta media */}
-            <div className="absolute top-2 left-4 w-[190px] h-[260px] bg-parchment rounded-2xl rotate-[-6deg] shadow-[0_16px_26px_rgba(0,0,0,0.12)] border border-clay/10 overflow-hidden">
-              <div className="h-[62%] bg-sage/75" />
-              <div className="p-3">
-                <div className="h-2 w-3/4 bg-clay/25 rounded-full mb-2" />
-                <div className="h-2 w-1/2 bg-clay/15 rounded-full" />
-              </div>
-            </div>
-
-            {/* Tarjeta frontal — la protagonista */}
-            <div className="absolute top-0 left-0 w-[190px] h-[260px] bg-parchment rounded-2xl rotate-[3deg] shadow-[0_18px_30px_rgba(0,0,0,0.16)] border border-clay/10 overflow-hidden">
-              <div className="h-[58%] bg-blush/80 flex items-end p-3">
-                <span className="text-[10px] font-body font-bold uppercase tracking-wide text-parchment bg-clay/70 rounded-full px-2 py-0.5">
-                  Leyendo ahora
-                </span>
-              </div>
-              <div className="p-3">
-                <div className="h-2.5 w-4/5 bg-clay/70 rounded-full mb-1.5" />
-                <div className="h-2 w-1/2 bg-clay/30 rounded-full mb-3" />
-                <div className="flex gap-0.5 mb-3">
-                  {[1, 2, 3, 4].map((i) => (
-                    <span key={i} className="text-sage text-sm">★</span>
-                  ))}
-                  <span className="text-clay/25 text-sm">★</span>
-                </div>
-                <div className="h-1.5 w-full bg-clay/10 rounded-full overflow-hidden">
-                  <div className="h-full w-2/3 bg-sage rounded-full" />
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute -bottom-6 right-2 text-3xl opacity-45 animate-floaty" style={{ animationDelay: "1s" }}>
-              🌱
-            </div>
-          </div>
+      {imageUrl ? (
+        <img src={imageUrl} alt={book.title} className="w-full h-full object-cover" />
+      ) : (
+        <div className="w-full h-full flex items-end p-2">
+          <span className="font-body text-[10px] font-bold text-parchment/90 line-clamp-2 [text-shadow:0_1px_2px_rgba(0,0,0,0.4)]">
+            {book.title}
+          </span>
         </div>
+      )}
+    </div>
+  );
+}
+
+export default function Landing() {
+  const { books, loading } = useLibrary();
+
+  const readingBooks = useMemo(() => books.filter((b) => b.status === "reading"), [books]);
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState<"left" | "right">("right");
+  const current = readingBooks[Math.min(index, readingBooks.length - 1)];
+
+  // Finished books chosen for the floating covers: picked once, the first time
+  // data finishes loading, so they stay put during this session and only
+  // reshuffle on an actual page refresh (fresh mount).
+  const [floatingBooks, setFloatingBooks] = useState<Book[] | null>(null);
+  useEffect(() => {
+    if (floatingBooks === null && !loading) {
+      const finished = books.filter((b) => b.status === "finished");
+      setFloatingBooks(pickRandom(finished, Math.min(FLOAT_POSITIONS.length, finished.length)));
+    }
+  }, [loading, books, floatingBooks]);
+
+  const goToIndex = (nextIndex: number, dir: "left" | "right") => {
+    setDirection(dir);
+    setIndex(nextIndex);
+  };
+
+  const currentImageUrl = current ? resolveMediaUrl(current.coverImage) : undefined;
+
+  return (
+    <div
+      className="w-full h-full flex flex-col overflow-hidden"
+      style={{ background: "radial-gradient(ellipse at 50% 15%, #fbf5e9 0%, #f6efe2 55%, #ead9bd 100%)" }}
+    >
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 relative">
+
+        {/* Encabezado */}
+        <div className="text-center mb-8 relative z-30">
+          <span className="block font-body text-xs tracking-[0.22em] uppercase text-sage font-bold mb-3">
+            Personal library
+          </span>
+          <h1 className="font-display font-bold text-[32px] md:text-[42px] text-clay leading-tight">
+            My Reading Journal
+          </h1>
+        </div>
+
+        {/* Escena central: portadas flotantes (terminados) + libro grande (leyendo) */}
+        <div className="relative w-full max-w-[640px] h-[300px] md:h-[340px] flex items-center justify-center">
+
+          {floatingBooks?.map((book, i) => (
+            <FloatingCover key={book.id} book={book} slot={FLOAT_POSITIONS[i]} delay={i * 0.35} />
+          ))}
+
+          {current ? (
+            <div className="relative z-10 flex items-center gap-4 md:gap-6">
+              {readingBooks.length > 1 && (
+                <button
+                  onClick={() => goToIndex((index - 1 + readingBooks.length) % readingBooks.length, "left")}
+                  aria-label="Previous book"
+                  className="flex-none w-[42px] h-[42px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-lg cursor-pointer text-latte transition-transform hover:-translate-x-0.5 active:scale-90"
+                >
+                  ←
+                </button>
+              )}
+
+              <div key={current.id} className="flex flex-col items-center motion-safe:animate-fadein">
+                <div
+                  className={`relative w-[170px] md:w-[200px] aspect-[2/3] rounded-2xl overflow-hidden shadow-[0_20px_40px_rgba(74,53,39,0.28)] border-4 border-parchment ${
+                    direction === "right" ? "motion-safe:animate-swipe-in-right" : "motion-safe:animate-swipe-in-left"
+                  }`}
+                  style={{ background: currentImageUrl ? undefined : current.coverBg }}
+                >
+                  {currentImageUrl ? (
+                    <img src={currentImageUrl} alt={current.title} className="absolute inset-0 w-full h-full object-cover" />
+                  ) : (
+                    <div className="absolute inset-0 flex items-end p-3">
+                      <span className="font-display font-semibold text-parchment text-base [text-shadow:0_1px_2px_rgba(0,0,0,0.4)] line-clamp-3">
+                        {current.title}
+                      </span>
+                    </div>
+                  )}
+                  <span className="absolute top-2.5 left-2.5 text-[10px] font-body font-bold uppercase tracking-wide text-parchment bg-clay/70 rounded-full px-2 py-0.5">
+                    Currently reading
+                  </span>
+                </div>
+                <p className="font-display font-bold text-clay text-lg mt-3 text-center max-w-[220px] line-clamp-2">
+                  {current.title}
+                </p>
+                <p className="font-body text-sand text-sm">{current.author}</p>
+              </div>
+
+              {readingBooks.length > 1 && (
+                <button
+                  onClick={() => goToIndex((index + 1) % readingBooks.length, "right")}
+                  aria-label="Next book"
+                  className="flex-none w-[42px] h-[42px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-lg cursor-pointer text-latte transition-transform hover:translate-x-0.5 active:scale-90"
+                >
+                  →
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="relative z-10 text-center">
+              <div className="text-[40px] mb-2">🌱</div>
+              <p className="font-body text-sand text-base">
+                {loading ? "Loading your library…" : "You're not reading anything yet."}
+              </p>
+            </div>
+          )}
+
+          {readingBooks.length > 1 && (
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {readingBooks.map((b, i) => (
+                <div
+                  key={b.id}
+                  onClick={() => goToIndex(i, i > index ? "right" : "left")}
+                  className="w-[8px] h-[8px] rounded-full cursor-pointer transition-transform hover:scale-125"
+                  style={{ background: i === index ? "#7d9d6e" : "rgba(139,105,74,0.25)" }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* CTA */}
+        <Link
+          to="/library"
+          className="mt-10 inline-block py-[15px] px-[34px] rounded-[26px] bg-sage text-parchment font-extrabold text-xl shadow-[0_8px_18px_rgba(125,157,110,0.35)] transition-transform hover:-translate-y-0.5 relative z-30"
+        >
+          Open my library →
+        </Link>
       </div>
     </div>
   );
