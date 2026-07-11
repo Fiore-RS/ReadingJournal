@@ -42,7 +42,7 @@ export default function Reading() {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center px-6 py-7 relative">
-      <h1 className="font-display text-[34px] font-semibold text-clay mb-1.5">🔖 Currently Reading</h1>
+      <h1 className="font-display text-[34px] font-semibold text-clay mb-1.5">🔖 Reading</h1>
 
       {readingBooks.length > 0 && current ? (
         <>

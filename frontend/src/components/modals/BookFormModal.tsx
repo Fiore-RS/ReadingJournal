@@ -115,7 +115,7 @@ export default function BookFormModal({ mode, formData, onChange, onSave, onClos
               className="w-full py-2.5 px-3 rounded-xl border-[1.5px] border-bark/25 mt-[5px] text-[15.5px] bg-white"
             >
               <option value="tbr">To Be Read</option>
-              <option value="reading">Currently Reading</option>
+              <option value="reading">Reading</option>
               <option value="wishlist">Wishlist</option>
               <option value="finished">Finished</option>
             </select>

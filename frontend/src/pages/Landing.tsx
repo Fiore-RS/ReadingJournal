@@ -150,7 +150,7 @@ export default function Landing() {
                   )}
 
                   <span className="absolute top-6 left-2.5 text-[10px] font-body font-bold uppercase tracking-wide text-parchment bg-clay/70 rounded-full px-2 py-0.5">
-                    Currently reading
+                    Reading
                   </span>
                 </div>
                 <p className="font-display font-bold text-clay text-lg mt-3 text-center max-w-[220px] line-clamp-2">

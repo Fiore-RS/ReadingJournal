@@ -3,7 +3,7 @@ import { useLibrary } from "../context/LibraryContext.js";
 import BookCard from "../components/BookCard.js";
 
 const STATUS_MAP: Record<string, { label: string; bg: string; color: string }> = {
-  reading: { label: "Currently Reading", bg: "rgba(217,199,154,0.35)", color: "#8a6a2e" },
+  reading: { label: "Reading", bg: "rgba(217,199,154,0.35)", color: "#8a6a2e" },
   tbr: { label: "To Be Read", bg: "rgba(159,184,163,0.3)", color: "#4c6b53" },
   wishlist: { label: "Wishlist", bg: "rgba(227,184,196,0.35)", color: "#9a4f66" },
   finished: { label: "Finished", bg: "rgba(125,157,110,0.28)", color: "#4a6b3a" },
