@@ -73,7 +73,7 @@ export default function Stats() {
         <span className="text-[36px]">📊</span>
         <h1 className="font-display text-5xl font-semibold text-clay m-0">Stats</h1>
       </div>
-      <div className="font-body text-sand text-base sm:ml-[50px] mb-8">A little snapshot of your reading life</div>
+      
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <StatCard icon="📖" label="To Be Read" value={stats.tbrCount} />
