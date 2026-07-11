@@ -28,6 +28,7 @@ const CONFIGS: Record<string, ShelfPageConfig> = {
     icon: "📖",
     addLabel: "Add Book",
     onAdd: "addChoice",
+    addStatus: "tbr",
     emptyText: "Nothing waiting patiently yet.",
   },
   wishlist: {
@@ -43,6 +44,9 @@ const CONFIGS: Record<string, ShelfPageConfig> = {
     filter: (b) => b.status === "finished",
     title: "Finished",
     icon: "🍃",
+    addLabel: "Add Book",
+    onAdd: "addChoice",
+    addStatus: "finished",
     emptyText: "No finished books yet — your first is waiting!",
   },
   favorites: {
@@ -61,7 +65,7 @@ export default function ShelfPage({ variant }: { variant: keyof typeof CONFIGS }
 
   const handleAdd = () => {
     if (config.onAdd === "addBook") openAddBookModal(config.addStatus);
-    if (config.onAdd === "addChoice") setModal({ type: "addChoice" });
+    if (config.onAdd === "addChoice") setModal({ type: "addChoice", status: config.addStatus!, label: config.title });
     if (config.onAdd === "addFavorite") {
       openPickModal("Mark a Finished Book as Favorite", (b) => b.status === "finished" && !b.favorite, (b) => {
         setFavorite(b.id, true);

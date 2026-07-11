@@ -32,11 +32,11 @@ export default function ModalRoot() {
   if (modal.type === "addChoice") {
     return (
       <ChoiceModal
-        title="Add a Book to To Be Read"
-        onNew={() => openAddBookModal("tbr")}
+        title={`Add a Book to ${modal.label}`}
+        onNew={() => openAddBookModal(modal.status)}
         onExisting={() =>
-          openPickModal("Move a Book to To Be Read", (b) => b.status !== "tbr", (b) => {
-            setStatus(b.id, "tbr");
+          openPickModal(`Move a Book to ${modal.label}`, (b) => b.status !== modal.status, (b) => {
+            setStatus(b.id, modal.status);
             closeModal();
           })
         }
