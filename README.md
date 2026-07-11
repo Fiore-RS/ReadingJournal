@@ -1,4 +1,4 @@
-# 📖 Cozy Reading Journal
+# 📖 My Reading Journal
 
 A full-stack rebuild of the Cozy Reading Journal — a warm little app to track
 what you're reading, what's waiting on your shelf, and what you thought of it
