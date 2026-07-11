@@ -7,7 +7,7 @@ export default function Landing() {
       className="w-full h-full flex flex-col"
       style={{ background: "radial-gradient(ellipse at 30% 20%, #fbf5e9 0%, #f6efe2 55%, #ead9bd 100%)" }}
     >
-      <LandingNav />
+
 
       <div className="flex-1 flex items-center justify-center relative px-10">
         <div className="absolute top-[10%] left-[8%] text-[48px] opacity-50 animate-floaty">🍂</div>
