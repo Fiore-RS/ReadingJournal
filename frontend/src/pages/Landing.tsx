@@ -106,7 +106,7 @@ export default function Landing() {
                 <button
                   onClick={() => goToIndex((index - 1 + readingBooks.length) % readingBooks.length, "left")}
                   aria-label="Previous book"
-                  className="flex-none w-[42px] h-[42px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-lg cursor-pointer text-latte transition-transform hover:-translate-x-0.5 active:scale-90"
+                  className="flex-none w-[42px] h-[42px] rounded-full border-none bg-sage shadow-[0_4px_10px_rgba(125,157,110,0.35)] text-lg cursor-pointer text-parchment transition-transform hover:-translate-x-0.5 active:scale-90"
                 >
                   ←
                 </button>
@@ -163,7 +163,7 @@ export default function Landing() {
                 <button
                   onClick={() => goToIndex((index + 1) % readingBooks.length, "right")}
                   aria-label="Next book"
-                  className="flex-none w-[42px] h-[42px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-lg cursor-pointer text-latte transition-transform hover:translate-x-0.5 active:scale-90"
+                  className="flex-none w-[42px] h-[42px] rounded-full border-none bg-sage shadow-[0_4px_10px_rgba(125,157,110,0.35)] text-lg cursor-pointer text-parchment transition-transform hover:translate-x-0.5 active:scale-90"
                 >
                   →
                 </button>
