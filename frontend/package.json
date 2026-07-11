@@ -4,10 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
+  "dev": "tsx watch server.ts",
+  "build": "tsc",
+  "start": "tsx server.ts",
+  "db:generate": "drizzle-kit generate",
+  "db:push": "drizzle-kit push",
+  "db:studio": "drizzle-kit studio",
+  "db:seed": "tsx src/db/seeders/seed.ts"
 },
   "dependencies": {
     "react": "^19.0.0",
