@@ -128,7 +128,28 @@ export default function Landing() {
                       </span>
                     </div>
                   )}
-                  <span className="absolute top-2.5 left-2.5 text-[10px] font-body font-bold uppercase tracking-wide text-parchment bg-clay/70 rounded-full px-2 py-0.5">
+
+                  {readingBooks.length > 1 && (
+                    <div className="absolute top-2 left-2 right-2 flex gap-1 z-10">
+                      {readingBooks.map((b, i) => (
+                        <div
+                          key={b.id}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            goToIndex(i, i > index ? "right" : "left");
+                          }}
+                          className="flex-1 h-[3px] rounded-full cursor-pointer overflow-hidden bg-parchment/40"
+                        >
+                          <div
+                            className="h-full rounded-full bg-parchment transition-[width] duration-200"
+                            style={{ width: i === index ? "100%" : "0%" }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <span className="absolute top-6 left-2.5 text-[10px] font-body font-bold uppercase tracking-wide text-parchment bg-clay/70 rounded-full px-2 py-0.5">
                     Currently reading
                   </span>
                 </div>
@@ -154,19 +175,6 @@ export default function Landing() {
               <p className="font-body text-sand text-base">
                 {loading ? "Loading your library…" : "You're not reading anything yet."}
               </p>
-            </div>
-          )}
-
-          {readingBooks.length > 1 && (
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-              {readingBooks.map((b, i) => (
-                <div
-                  key={b.id}
-                  onClick={() => goToIndex(i, i > index ? "right" : "left")}
-                  className="w-[8px] h-[8px] rounded-full cursor-pointer transition-transform hover:scale-125"
-                  style={{ background: i === index ? "#7d9d6e" : "rgba(139,105,74,0.25)" }}
-                />
-              ))}
             </div>
           )}
         </div>
