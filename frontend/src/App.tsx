@@ -4,7 +4,7 @@ import AppLayout from "./components/AppLayout.js";
 import Landing from "./pages/Landing.js";
 import ShelfPage from "./pages/ShelfPage.js";
 import Series from "./pages/Series.js";
-//import Reading from "./pages/Reading.js";
+import Reading from "./pages/Reading.js";
 import Reviews from "./pages/Reviews.js";
 import Stats from "./pages/Stats.js";
 
@@ -36,7 +36,7 @@ export default function App() {
               <Route path="/reviews" element={<Reviews />} />
               <Route path="/stats" element={<Stats />} />
               <Route path="/series" element={<Series />} />
-              
+              <Route path="/reading" element={<Reading />} />
             </Route>
           </Routes>
         </div>
