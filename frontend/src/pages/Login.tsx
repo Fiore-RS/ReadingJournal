@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.js";
 
 export default function Login() {
@@ -81,6 +81,15 @@ export default function Login() {
             <span className="font-bold text-clay">Visitor</span> / <span className="font-bold text-clay">vstr123</span> —
             it's a sandbox library you're free to add to, edit, or delete from. Nothing there affects the real thing.
           </p>
+        </div>
+
+        <div className="mt-5 flex justify-center">
+          <Link
+            to="/"
+            className="inline-block py-2.5 px-6 rounded-[20px] bg-sage text-parchment font-extrabold text-sm shadow-[0_4px_10px_rgba(125,157,110,0.35)] transition-transform hover:-translate-y-0.5"
+          >
+            ← Back to home
+          </Link>
         </div>
       </div>
     </div>

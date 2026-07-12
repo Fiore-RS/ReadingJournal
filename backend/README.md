@@ -29,6 +29,7 @@ npm run db:push      # push the Drizzle schema to Neon (no migration files)
 npm run db:generate  # generate SQL migration files instead, if you prefer that workflow
 npm run db:studio    # open Drizzle Studio to browse your data
 npm run db:seed      # one-time setup: creates your account + the demo account (see below)
+npm run db:update-demo  # rotate the demo account's username/password/display name later
 npm run build        # compile to dist/
 npm start            # run the compiled build
 ```
