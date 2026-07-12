@@ -49,7 +49,7 @@ export default function YearDetailModal({ year }: { year: string }) {
                   {group.books.length} book{group.books.length === 1 ? "" : "s"}
                 </span>
               </div>
-              <div className="flex gap-4 flex-wrap p-4 rounded-2xl bg-bark/[0.06]">
+              <div className="flex justify-center gap-4 flex-wrap p-4 rounded-2xl bg-bark/[0.06]">
                 {group.books.map((book) => (
                   <BookCard key={book.id} book={book} size="small" onClick={() => openDetailsModal(book.id)} />
                 ))}

@@ -33,9 +33,23 @@ export default function Series() {
 
   return (
     <div className="w-full px-4 sm:px-8 lg:px-12 pt-6 sm:pt-9 pb-16">
-      <div className="flex items-center gap-2.5 sm:gap-3.5 mb-6 flex-wrap">
+      <div className="flex items-center gap-2.5 sm:gap-3.5 mb-6">
         <span className="text-2xl sm:text-3xl lg:text-[36px]">🩷</span>
         <h1 className="font-display text-2xl sm:text-3xl lg:text-5xl font-semibold text-clay m-0">Series &amp; Standalones</h1>
+      </div>
+
+      <div className="flex items-center gap-3.5 mb-7 flex-wrap">
+        <div className="relative flex-1 min-w-[160px] max-w-[360px]">
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[17px] opacity-60">🔍</span>
+          <input
+            type="text"
+            placeholder="Search by title or author..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full box-border py-2.5 pl-[42px] pr-4 rounded-[22px] border-[1.5px] border-bark/25 bg-parchment text-base text-clay outline-none"
+          />
+        </div>
+
         <div className="w-full sm:w-auto sm:ml-auto flex gap-3">
           <button
             onClick={() => setModal({ type: "newSeries", name: "" })}
@@ -52,17 +66,6 @@ export default function Series() {
         </div>
       </div>
 
-      <div className="relative w-full sm:max-w-[360px] mb-7">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[17px] opacity-60">🔍</span>
-        <input
-          type="text"
-          placeholder="Search by title or author..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full py-2.5 pl-[42px] pr-4 rounded-[22px] border-[1.5px] border-bark/25 bg-parchment text-base text-clay outline-none"
-        />
-      </div>
-
       {sections.map((section) => (
         <div key={section.name} className="mb-9">
           <div className="flex items-baseline gap-2.5 mb-3.5">
@@ -71,7 +74,7 @@ export default function Series() {
             <span className="text-[14.5px] text-driftwood">{section.countLabel}</span>
           </div>
           {section.books.length > 0 ? (
-            <div className="flex gap-4 sm:gap-9 flex-wrap p-3 sm:p-5 rounded-[18px] bg-bark/[0.06]">
+            <div className="flex justify-center gap-4 sm:gap-9 flex-wrap p-3 sm:p-5 rounded-[18px] bg-bark/[0.06]">
               {section.books.map((book) => (
                 <BookCard key={book.id} book={book} onClick={() => openDetailsModal(book.id)} metaMode="series" />
               ))}

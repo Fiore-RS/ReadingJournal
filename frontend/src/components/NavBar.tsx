@@ -50,10 +50,10 @@ export function AppNavBar() {
     <>
       {/* Compact bar with hamburger toggle — mobile only */}
       <div className="flex sm:hidden flex-none items-center justify-between py-2.5 px-4 bg-gradient-to-b from-latte to-espresso shadow-[0_4px_12px_rgba(0,0,0,0.18)] relative z-30">
-        <Link to="/" className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <span className="text-xl">📕</span>
           <span className="font-display font-bold text-parchment text-[15px]">Reading Journal</span>
-        </Link>
+        </div>
         <button
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -107,6 +107,8 @@ export function AppNavBar() {
 
       {/* Horizontal scrollable bar — tablet and up */}
       <div className="hidden sm:flex flex-none items-center gap-2 py-3.5 px-7 bg-gradient-to-b from-latte to-espresso shadow-[0_4px_12px_rgba(0,0,0,0.18)] overflow-x-auto z-30">
+        <span className="text-[24px]">📕</span>
+        <div className="w-px h-6 bg-parchment/20 flex-none mr-1" />
         {NAV_ITEMS.map((item) => {
           const active = location.pathname === item.path;
           return (
@@ -123,20 +125,6 @@ export function AppNavBar() {
             </Link>
           );
         })}
-
-        <div className="w-px h-6 bg-parchment/20 flex-none mx-1" />
-        <div className="flex-none flex items-center gap-2 pr-2">
-          <div className="text-parchment/70 text-sm whitespace-nowrap">
-            {user?.displayName}
-            {user?.isDemo && <span className="ml-1 opacity-60">(demo)</span>}
-          </div>
-          <button
-            onClick={handleLogout}
-            className="flex-none py-1.5 px-3.5 rounded-full border-[1.5px] border-parchment/25 text-parchment text-sm font-bold cursor-pointer whitespace-nowrap hover:bg-parchment/10 transition-colors"
-          >
-            Log out
-          </button>
-        </div>
       </div>
     </>
   );

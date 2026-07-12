@@ -10,7 +10,7 @@ interface BookCardProps {
 
 const SIZE_MAP = {
   small: { width: "w-[118px]", title: "text-[14.5px]" },
-  normal: { width: "w-[148px]", title: "text-[15.5px]" },
+  normal: { width: "w-[128px] sm:w-[140px]", title: "text-[14.5px] sm:text-[15.5px]" },
   large: { width: "w-[150px] sm:w-[190px]", title: "text-lg" },
 };
 

@@ -41,12 +41,12 @@ export default function Reading() {
   };
 
   return (
-    <div className="w-full min-h-full flex flex-col items-center px-4 sm:px-6 pt-6 sm:pt-8 pb-12 sm:pb-16 relative">
+    <div className="w-full min-h-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 relative">
       <h1 className="font-display text-2xl sm:text-[34px] font-semibold text-clay mb-1.5">🔖 Reading</h1>
 
       {readingBooks.length > 0 && current ? (
         <>
-          <div className="flex items-center gap-1.5 sm:gap-2 w-full max-w-[920px] mt-4 sm:mt-5">
+          <div className="flex items-center gap-1.5 sm:gap-2 w-full max-w-[920px] mx-auto mt-4 sm:mt-5">
             <button
               onClick={() => goToIndex((readingIndex - 1 + readingBooks.length) % readingBooks.length, "left")}
               className="flex-none w-[36px] h-[36px] sm:w-[46px] sm:h-[46px] rounded-full border-none bg-sage shadow-[0_4px_10px_rgba(125,157,110,0.35)] text-lg sm:text-xl cursor-pointer text-parchment transition-transform hover:-translate-x-0.5 active:scale-90"

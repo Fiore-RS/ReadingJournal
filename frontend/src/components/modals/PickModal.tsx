@@ -29,7 +29,7 @@ export default function PickModal({ title, books, filterFn, onPick, onClose }: P
         className="w-full py-2.5 px-3.5 rounded-2xl border-[1.5px] border-bark/25 mb-4 text-base"
       />
       {results.length > 0 ? (
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap justify-center gap-4">
           {results.map((book) => (
             <BookCard key={book.id} book={book} size="small" onClick={() => onPick(book)} />
           ))}

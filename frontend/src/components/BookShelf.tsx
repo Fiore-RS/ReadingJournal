@@ -118,9 +118,8 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
 
       {hasBooks ? (
         <div
-          className="grid gap-x-3.5 sm:gap-x-[22px] gap-y-5 sm:gap-y-7 py-4 sm:py-[26px] px-2.5 sm:px-5 rounded-[20px]"
+          className="flex flex-wrap justify-center gap-x-3.5 sm:gap-x-[22px] gap-y-5 sm:gap-y-7 py-4 sm:py-[26px] px-2.5 sm:px-5 rounded-[20px]"
           style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))",
             background:
               "repeating-linear-gradient(180deg, rgba(139,105,74,0.06) 0px, rgba(139,105,74,0.06) 210px, rgba(139,105,74,0.14) 210px, rgba(139,105,74,0.14) 218px)",
           }}
