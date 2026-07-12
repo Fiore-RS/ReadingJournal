@@ -107,10 +107,6 @@ export function AppNavBar() {
 
       {/* Horizontal scrollable bar — tablet and up */}
       <div className="hidden sm:flex flex-none items-center gap-2 py-3.5 px-7 bg-gradient-to-b from-latte to-espresso shadow-[0_4px_12px_rgba(0,0,0,0.18)] overflow-x-auto z-30">
-        <Link to="/" className="flex items-center gap-2 py-1.5 pl-1 pr-3.5 flex-none">
-          <span className="text-[24px]">📕</span>
-        </Link>
-        <div className="w-px h-6 bg-parchment/20 flex-none mr-1" />
         {NAV_ITEMS.map((item) => {
           const active = location.pathname === item.path;
           return (

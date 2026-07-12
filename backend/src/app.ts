@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import { env } from "../env";
 import authRoutes from "./routes/auth_routes";
+import publicRoutes from "./routes/public_routes";
 import booksRoutes from "./routes/books_routes";
 import seriesRoutes from "./routes/series_routes";
 import uploadsRoutes from "./routes/uploads_routes";
@@ -35,6 +36,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api/public", publicRoutes);
 app.use("/api/books", requireAuth, booksRoutes);
 app.use("/api/series", requireAuth, seriesRoutes);
 app.use("/api/uploads", requireAuth, uploadsRoutes);
