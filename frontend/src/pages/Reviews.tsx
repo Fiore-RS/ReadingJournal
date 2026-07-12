@@ -19,10 +19,10 @@ export default function Reviews() {
   );
 
   return (
-    <div className="w-full min-h-full px-4 sm:px-12 pt-9 pb-16">
-      <div className="flex items-center gap-3.5 mb-1.5">
-        <span className="text-[36px]">📝</span>
-        <h1 className="font-display text-5xl font-semibold text-clay m-0">Reviews</h1>
+    <div className="w-full min-h-full px-4 sm:px-8 lg:px-12 pt-6 sm:pt-9 pb-16">
+      <div className="flex items-center gap-2.5 sm:gap-3.5 mb-1.5">
+        <span className="text-2xl sm:text-3xl lg:text-[36px]">📝</span>
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-clay m-0">Reviews</h1>
       </div>
       <div className="font-body text-sand text-base sm:ml-[50px] mb-8">
         {reviewed.length} review{reviewed.length === 1 ? "" : "s"}

@@ -32,27 +32,27 @@ export default function Series() {
   }, [books, extraSeries, q]);
 
   return (
-    <div className="w-full px-12 pt-9 pb-16">
-      <div className="flex items-center gap-3.5 mb-6 flex-wrap">
-        <span className="text-[36px]">🩷</span>
-        <h1 className="font-display text-5xl font-semibold text-clay m-0">Series &amp; Standalones</h1>
-        <div className="ml-auto flex gap-3">
+    <div className="w-full px-4 sm:px-8 lg:px-12 pt-6 sm:pt-9 pb-16">
+      <div className="flex items-center gap-2.5 sm:gap-3.5 mb-6 flex-wrap">
+        <span className="text-2xl sm:text-3xl lg:text-[36px]">🩷</span>
+        <h1 className="font-display text-2xl sm:text-3xl lg:text-5xl font-semibold text-clay m-0">Series &amp; Standalones</h1>
+        <div className="w-full sm:w-auto sm:ml-auto flex gap-3">
           <button
             onClick={() => setModal({ type: "newSeries", name: "" })}
-            className="py-2.5 px-[18px] rounded-[20px] border-[1.5px] border-bark/25 bg-parchment font-extrabold text-[15.5px] text-bark cursor-pointer"
+            className="flex-1 sm:flex-none py-2.5 px-[18px] rounded-[20px] border-[1.5px] border-bark/25 bg-parchment font-extrabold text-sm sm:text-[15.5px] text-bark cursor-pointer whitespace-nowrap"
           >
             + New Series
           </button>
           <button
             onClick={() => openPickModal("Add a Book to a Series", () => true, (b) => openEditBookModal(b))}
-            className="py-2.5 px-[18px] rounded-[20px] border-none bg-sage text-parchment font-extrabold text-[15.5px] cursor-pointer shadow-[0_4px_10px_rgba(125,157,110,0.35)]"
+            className="flex-1 sm:flex-none py-2.5 px-[18px] rounded-[20px] border-none bg-sage text-parchment font-extrabold text-sm sm:text-[15.5px] cursor-pointer shadow-[0_4px_10px_rgba(125,157,110,0.35)] whitespace-nowrap"
           >
             + Add Existing Book
           </button>
         </div>
       </div>
 
-      <div className="relative max-w-[360px] mb-7">
+      <div className="relative w-full sm:max-w-[360px] mb-7">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[17px] opacity-60">🔍</span>
         <input
           type="text"
@@ -71,7 +71,7 @@ export default function Series() {
             <span className="text-[14.5px] text-driftwood">{section.countLabel}</span>
           </div>
           {section.books.length > 0 ? (
-            <div className="flex gap-9 flex-wrap p-5 rounded-[18px] bg-bark/[0.06]">
+            <div className="flex gap-4 sm:gap-9 flex-wrap p-3 sm:p-5 rounded-[18px] bg-bark/[0.06]">
               {section.books.map((book) => (
                 <BookCard key={book.id} book={book} onClick={() => openDetailsModal(book.id)} metaMode="series" />
               ))}

@@ -30,10 +30,10 @@ export default function Details() {
   const favBtnLabel = book.favorite ? "♥ Favorited" : "♡ Add to Favorites";
 
   return (
-    <div className="w-full min-h-full flex items-center justify-center px-6 py-12">
-      <div className="flex gap-10 bg-white rounded-[26px] p-10 max-w-[820px] w-full shadow-[0_12px_30px_rgba(74,53,39,0.16)] relative">
+    <div className="w-full min-h-full flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
+      <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 bg-white rounded-[26px] p-5 sm:p-10 max-w-[820px] w-full shadow-[0_12px_30px_rgba(74,53,39,0.16)] relative">
         <div className="absolute -top-2.5 right-[60px] w-14 h-6 bg-sage-soft/85 rotate-[5deg] shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
-        <div className="flex-none w-[210px]">
+        <div className="flex-none w-[150px] sm:w-[210px] mx-auto sm:mx-0">
           <BookCard book={book} size="large" />
         </div>
         <div className="flex-1 flex flex-col gap-4 min-w-0">
@@ -44,7 +44,7 @@ export default function Details() {
             >
               {sm.label}
             </span>
-            <h1 className="font-display text-[34px] font-semibold text-clay mt-2.5 mb-1">{book.title}</h1>
+            <h1 className="font-display text-2xl sm:text-[34px] font-semibold text-clay mt-2.5 mb-1">{book.title}</h1>
             <div className="text-[17px] text-sand">by {book.author}</div>
           </div>
           <div className="grid grid-cols-2 gap-x-5 gap-y-3">

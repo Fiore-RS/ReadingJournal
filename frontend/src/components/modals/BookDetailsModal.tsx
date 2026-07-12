@@ -31,9 +31,9 @@ export default function BookDetailsModal({ bookId }: { bookId: string }) {
   const favBtnLabel = book.favorite ? "♥ Favorited" : "♡ Add to Favorites";
 
   return (
-    <ModalShell onClose={closeModal} maxWidth={820} bgClassName="bg-white" showCloseButton>
+    <ModalShell onClose={closeModal} maxWidth={820} bgClassName="bg-white">
       <div className="flex gap-10 flex-col sm:flex-row">
-        <div className="flex-none w-[210px] mx-auto sm:mx-0 flex flex-col gap-3">
+        <div className="flex-none w-[210px] mx-auto sm:mx-0 flex flex-col items-center gap-3">
           <BookCard book={book} size="large" />
           {!confirmingDelete ? (
             <button
@@ -43,7 +43,7 @@ export default function BookDetailsModal({ bookId }: { bookId: string }) {
               Delete Book
             </button>
           ) : (
-            <div className="mt-auto flex flex-col gap-2 p-3 rounded-2xl bg-[#a15b3d]/10 border-[1.5px] border-[#a15b3d]/30">
+            <div className="w-full mt-auto flex flex-col gap-2 p-3 rounded-2xl bg-[#a15b3d]/10 border-[1.5px] border-[#a15b3d]/30">
               <div className="text-[13px] text-[#a15b3d] font-bold text-center leading-snug">
                 Delete "{book.title}" permanently? This can't be undone.
               </div>
@@ -122,7 +122,7 @@ export default function BookDetailsModal({ bookId }: { bookId: string }) {
               </div>
             </div>
           )}
-          <div className="flex gap-2.5 flex-wrap mt-auto pt-2.5">
+          <div className="flex justify-center gap-2.5 flex-wrap mt-auto pt-2.5">
             <button
               onClick={() => openEditBookModal(book)}
               className="py-2.5 px-5 rounded-[20px] border-none bg-sand text-parchment font-extrabold text-[15.5px] cursor-pointer"

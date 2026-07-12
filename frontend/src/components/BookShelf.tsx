@@ -34,17 +34,17 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
   const hasBooks = filtered.length > 0;
 
   return (
-    <div className="w-full min-h-full box-border px-12 pt-9 pb-16">
-      <div className="flex items-center gap-3.5 mb-1.5">
-        <span className="text-[36px]">{pageIcon}</span>
-        <h1 className="font-display text-5xl font-semibold text-clay m-0">{pageTitle}</h1>
+    <div className="w-full min-h-full box-border px-4 sm:px-8 lg:px-12 pt-6 sm:pt-9 pb-16">
+      <div className="flex items-center gap-2.5 sm:gap-3.5 mb-1.5">
+        <span className="text-2xl sm:text-3xl lg:text-[36px]">{pageIcon}</span>
+        <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold text-clay m-0">{pageTitle}</h1>
       </div>
-      <div className="font-body text-sand text-base ml-[50px] mb-5">
+      <div className="font-body text-sand text-base ml-[38px] sm:ml-[50px] mb-5">
         {books.length} book{books.length === 1 ? "" : "s"}
       </div>
 
       <div className="flex items-center gap-3.5 mb-7 flex-wrap">
-        <div className="relative flex-1 min-w-[220px] max-w-[360px]">
+        <div className="relative flex-1 min-w-[160px] max-w-[360px]">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[17px] opacity-60">🔍</span>
           <input
             type="text"
@@ -83,7 +83,7 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
         {!!addLabel && (
           <button
             onClick={onAddClick}
-            className="ml-auto py-2.5 px-[22px] rounded-[22px] border-none bg-sage text-parchment font-body font-extrabold text-base cursor-pointer shadow-[0_4px_10px_rgba(125,157,110,0.35)] flex items-center gap-1.5"
+            className="hidden sm:flex ml-auto py-2.5 px-[22px] rounded-[22px] border-none bg-sage text-parchment font-body font-extrabold text-base cursor-pointer shadow-[0_4px_10px_rgba(125,157,110,0.35)] items-center gap-1.5"
           >
             <span className="text-lg">+</span> {addLabel}
           </button>
@@ -105,13 +105,22 @@ export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddC
             {f.label}
           </button>
         ))}
+
+        {!!addLabel && (
+          <button
+            onClick={onAddClick}
+            className="sm:hidden flex items-center gap-1 py-2 px-4 rounded-full border-none bg-sage text-parchment font-body font-extrabold text-sm cursor-pointer shadow-[0_4px_10px_rgba(125,157,110,0.35)] ml-auto"
+          >
+            <span className="text-base leading-none">+</span> Add
+          </button>
+        )}
       </div>
 
       {hasBooks ? (
         <div
-          className="grid gap-x-[22px] gap-y-7 py-[26px] px-5 rounded-[20px]"
+          className="grid gap-x-3.5 sm:gap-x-[22px] gap-y-5 sm:gap-y-7 py-4 sm:py-[26px] px-2.5 sm:px-5 rounded-[20px]"
           style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(148px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))",
             background:
               "repeating-linear-gradient(180deg, rgba(139,105,74,0.06) 0px, rgba(139,105,74,0.06) 210px, rgba(139,105,74,0.14) 210px, rgba(139,105,74,0.14) 218px)",
           }}

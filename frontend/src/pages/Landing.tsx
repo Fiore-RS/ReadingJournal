@@ -24,7 +24,7 @@ function FloatingCover({ book, slot, delay }: { book: Book; slot: (typeof FLOAT_
   const imageUrl = resolveMediaUrl(book.coverImage);
   return (
     <div
-      className="absolute rounded-lg overflow-hidden shadow-[0_10px_20px_rgba(74,53,39,0.22)] opacity-90 animate-floaty"
+      className="hidden sm:block absolute rounded-lg overflow-hidden shadow-[0_10px_20px_rgba(74,53,39,0.22)] opacity-90 animate-floaty"
       style={{
         top: slot.top,
         left: "left" in slot ? slot.left : undefined,
@@ -78,13 +78,13 @@ export default function Landing() {
 
   return (
     <div
-      className="w-full h-full flex flex-col overflow-hidden"
+      className="w-full h-full flex flex-col overflow-y-auto overflow-x-hidden"
       style={{ background: "radial-gradient(ellipse at 50% 15%, #fbf5e9 0%, #f6efe2 55%, #ead9bd 100%)" }}
     >
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-8 relative">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-8 relative">
 
         {/* Encabezado */}
-        <div className="text-center mb-8 relative z-30">
+        <div className="text-center mb-10 sm:mb-14 relative z-30">
           <span className="block font-body text-xs tracking-[0.22em] uppercase text-sage font-bold mb-3">
             Personal library
           </span>
@@ -94,7 +94,7 @@ export default function Landing() {
         </div>
 
         {/* Escena central: portadas flotantes (terminados) + libro grande (leyendo) */}
-        <div className="relative w-full max-w-[640px] h-[300px] md:h-[340px] flex items-center justify-center">
+        <div className="relative w-full max-w-[640px] h-auto sm:h-[300px] md:h-[340px] flex items-center justify-center py-2 sm:py-0">
 
           {floatingBooks?.map((book, i) => (
             <FloatingCover key={book.id} book={book} slot={FLOAT_POSITIONS[i]} delay={i * 0.35} />
@@ -153,7 +153,7 @@ export default function Landing() {
                     Reading
                   </span>
                 </div>
-                <p className="font-display font-bold text-clay text-lg mt-3 text-center max-w-[220px] line-clamp-2">
+                <p className="font-display font-bold text-clay text-lg mt-3 text-center max-w-[220px] line-clamp-2 min-h-[44px]">
                   {current.title}
                 </p>
                 <p className="font-body text-sand text-sm">{current.author}</p>
@@ -182,7 +182,7 @@ export default function Landing() {
         {/* CTA */}
         <Link
           to="/library"
-          className="mt-10 inline-block py-[15px] px-[34px] rounded-[26px] bg-sage text-parchment font-extrabold text-xl shadow-[0_8px_18px_rgba(125,157,110,0.35)] transition-transform hover:-translate-y-0.5 relative z-30"
+          className="mt-12 sm:mt-14 inline-block py-[15px] px-[34px] rounded-[26px] bg-sage text-parchment font-extrabold text-xl shadow-[0_8px_18px_rgba(125,157,110,0.35)] transition-transform hover:-translate-y-0.5 relative z-30"
         >
           Open my library →
         </Link>

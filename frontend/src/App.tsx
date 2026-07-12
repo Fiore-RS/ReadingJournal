@@ -12,7 +12,7 @@ export default function App() {
   return (
     <LibraryProvider>
       <BrowserRouter basename="/ReadingJournal">
-        <div className="w-full h-screen overflow-hidden bg-cream font-body flex flex-col relative">
+        <div className="w-full h-dvh overflow-hidden bg-cream font-body flex flex-col relative">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route element={<AppLayout />}>

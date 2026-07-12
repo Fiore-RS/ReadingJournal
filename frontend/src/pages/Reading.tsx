@@ -41,32 +41,32 @@ export default function Reading() {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-6 py-7 relative">
-      <h1 className="font-display text-[34px] font-semibold text-clay mb-1.5">🔖 Reading</h1>
+    <div className="w-full min-h-full flex flex-col items-center px-4 sm:px-6 pt-6 sm:pt-8 pb-12 sm:pb-16 relative">
+      <h1 className="font-display text-2xl sm:text-[34px] font-semibold text-clay mb-1.5">🔖 Reading</h1>
 
       {readingBooks.length > 0 && current ? (
         <>
-          <div className="flex items-center gap-2 w-full max-w-[920px] mt-5">
+          <div className="flex items-center gap-1.5 sm:gap-2 w-full max-w-[920px] mt-4 sm:mt-5">
             <button
               onClick={() => goToIndex((readingIndex - 1 + readingBooks.length) % readingBooks.length, "left")}
-              className="flex-none w-[46px] h-[46px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-xl cursor-pointer text-latte transition-transform hover:-translate-x-0.5 active:scale-90"
+              className="flex-none w-[36px] h-[36px] sm:w-[46px] sm:h-[46px] rounded-full border-none bg-sage shadow-[0_4px_10px_rgba(125,157,110,0.35)] text-lg sm:text-xl cursor-pointer text-parchment transition-transform hover:-translate-x-0.5 active:scale-90"
             >
               ←
             </button>
 
             <div
               key={current.id}
-              className={`flex-1 flex gap-9 bg-white rounded-[26px] p-8 shadow-[0_12px_30px_rgba(74,53,39,0.18)] relative ${
+              className={`flex-1 flex flex-col sm:flex-row gap-5 sm:gap-9 bg-white rounded-[26px] p-5 sm:p-8 shadow-[0_12px_30px_rgba(74,53,39,0.18)] relative ${
                 direction === "right" ? "motion-safe:animate-swipe-in-right" : "motion-safe:animate-swipe-in-left"
               }`}
             >
               <div className="absolute -top-2.5 left-10 w-[60px] h-6 bg-blush/85 -rotate-[4deg] rounded-sm shadow-[0_3px_6px_rgba(0,0,0,0.12)]" />
-              <div className="flex-none w-[190px]">
+              <div className="flex-none w-[150px] sm:w-[190px] mx-auto sm:mx-0">
                 <BookCard book={current} size="large" />
               </div>
               <div className="flex-1 flex flex-col gap-3.5 min-w-0">
                 <div>
-                  <h2 className="font-display text-[30px] font-semibold text-clay mb-1">{current.title}</h2>
+                  <h2 className="font-display text-2xl sm:text-[30px] font-semibold text-clay mb-1">{current.title}</h2>
                   <div className="text-[17px] text-sand">by {current.author}</div>
                 </div>
                 <div className="flex gap-2.5 flex-wrap">
@@ -97,7 +97,7 @@ export default function Reading() {
                     Update Progress
                   </button>
                 </div>
-                <div className="flex gap-2.5 flex-wrap mt-auto pt-2">
+                <div className="flex justify-center gap-2.5 flex-wrap mt-auto pt-2">
                   <button onClick={handleMarkFinished} className="py-2.5 px-5 rounded-[20px] border-none bg-sage text-parchment font-extrabold text-[15.5px] cursor-pointer shadow-[0_4px_10px_rgba(125,157,110,0.3)]">
                     ✔ Mark as Finished
                   </button>
@@ -113,7 +113,7 @@ export default function Reading() {
 
             <button
               onClick={() => goToIndex((readingIndex + 1) % readingBooks.length, "right")}
-              className="flex-none w-[46px] h-[46px] rounded-full border-none bg-parchment shadow-[0_4px_10px_rgba(74,53,39,0.18)] text-xl cursor-pointer text-latte transition-transform hover:translate-x-0.5 active:scale-90"
+              className="flex-none w-[36px] h-[36px] sm:w-[46px] sm:h-[46px] rounded-full border-none bg-sage shadow-[0_4px_10px_rgba(125,157,110,0.35)] text-lg sm:text-xl cursor-pointer text-parchment transition-transform hover:translate-x-0.5 active:scale-90"
             >
               →
             </button>
