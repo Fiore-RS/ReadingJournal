@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../db/connection";
 import { books } from "../db/schema/books";
 import { asyncHandler, ApiError } from "../middleware/error_handler";
@@ -14,14 +14,17 @@ import {
 } from "../utils/book_validators";
 
 // GET /api/books
-export const listBooks = asyncHandler(async (_req: Request, res: Response) => {
-  const all = await db.select().from(books).orderBy(books.createdAt);
+export const listBooks = asyncHandler(async (req: Request, res: Response) => {
+  const all = await db.select().from(books).where(eq(books.userId, req.userId)).orderBy(books.createdAt);
   res.json(all);
 });
 
 // GET /api/books/:id
 export const getBook = asyncHandler(async (req: Request, res: Response) => {
-  const [book] = await db.select().from(books).where(eq(books.id, req.params.id));
+  const [book] = await db
+    .select()
+    .from(books)
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)));
   if (!book) throw new ApiError(404, "Book not found");
   res.json(book);
 });
@@ -31,7 +34,7 @@ export const createBook = asyncHandler(async (req: Request, res: Response) => {
   const data = createBookSchema.parse(req.body);
   const [created] = await db
     .insert(books)
-    .values({ ...data, series: data.series ?? null, seriesOrder: data.seriesOrder ?? null })
+    .values({ ...data, userId: req.userId, series: data.series ?? null, seriesOrder: data.seriesOrder ?? null })
     .returning();
   res.status(201).json(created);
 });
@@ -39,13 +42,16 @@ export const createBook = asyncHandler(async (req: Request, res: Response) => {
 // PUT /api/books/:id
 export const updateBook = asyncHandler(async (req: Request, res: Response) => {
   const data = updateBookSchema.parse(req.body);
-  const [existing] = await db.select().from(books).where(eq(books.id, req.params.id));
+  const [existing] = await db
+    .select()
+    .from(books)
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)));
   if (!existing) throw new ApiError(404, "Book not found");
 
   const [updated] = await db
     .update(books)
     .set({ ...data, updatedAt: new Date() })
-    .where(eq(books.id, req.params.id))
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)))
     .returning();
 
   // If the cover image changed (new upload, or removed), delete the old
@@ -59,7 +65,10 @@ export const updateBook = asyncHandler(async (req: Request, res: Response) => {
 
 // DELETE /api/books/:id
 export const deleteBook = asyncHandler(async (req: Request, res: Response) => {
-  const [deleted] = await db.delete(books).where(eq(books.id, req.params.id)).returning();
+  const [deleted] = await db
+    .delete(books)
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)))
+    .returning();
   if (!deleted) throw new ApiError(404, "Book not found");
   if (deleted.coverImage) deleteUploadedFile(deleted.coverImage);
   res.status(204).send();
@@ -71,7 +80,7 @@ export const updateStatus = asyncHandler(async (req: Request, res: Response) => 
   const [updated] = await db
     .update(books)
     .set({ ...data, updatedAt: new Date() })
-    .where(eq(books.id, req.params.id))
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)))
     .returning();
   if (!updated) throw new ApiError(404, "Book not found");
   res.json(updated);
@@ -83,7 +92,7 @@ export const updateFavorite = asyncHandler(async (req: Request, res: Response) =
   const [updated] = await db
     .update(books)
     .set({ ...data, updatedAt: new Date() })
-    .where(eq(books.id, req.params.id))
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)))
     .returning();
   if (!updated) throw new ApiError(404, "Book not found");
   res.json(updated);
@@ -92,14 +101,17 @@ export const updateFavorite = asyncHandler(async (req: Request, res: Response) =
 // PATCH /api/books/:id/progress  { progressPages }
 export const updateProgress = asyncHandler(async (req: Request, res: Response) => {
   const data = updateProgressSchema.parse(req.body);
-  const [existing] = await db.select().from(books).where(eq(books.id, req.params.id));
+  const [existing] = await db
+    .select()
+    .from(books)
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)));
   if (!existing) throw new ApiError(404, "Book not found");
 
   const clamped = Math.max(0, Math.min(data.progressPages, existing.pages || data.progressPages));
   const [updated] = await db
     .update(books)
     .set({ progressPages: clamped, updatedAt: new Date() })
-    .where(eq(books.id, req.params.id))
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)))
     .returning();
   res.json(updated);
 });
@@ -118,7 +130,7 @@ export const saveReview = asyncHandler(async (req: Request, res: Response) => {
       favorite: data.favorite,
       updatedAt: new Date(),
     })
-    .where(eq(books.id, req.params.id))
+    .where(and(eq(books.id, req.params.id), eq(books.userId, req.userId)))
     .returning();
   if (!updated) throw new ApiError(404, "Book not found");
   res.json(updated);

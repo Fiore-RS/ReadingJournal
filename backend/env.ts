@@ -11,6 +11,10 @@ const envSchema = z.object({
   .string()
   .default("http://localhost:5173")
   .transform((val) => val.split(",").map((origin) => origin.trim())),
+  JWT_SECRET: z
+    .string()
+    .min(32, "JWT_SECRET is required and should be at least 32 characters — generate one with `openssl rand -hex 32`"),
+  JWT_EXPIRES_IN: z.string().default("30d"),
 });
 
 const parsed = envSchema.safeParse(process.env);

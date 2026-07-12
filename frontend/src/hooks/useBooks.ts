@@ -3,7 +3,7 @@ import { booksService } from "../services/booksService.js";
 import { seriesService } from "../services/seriesService.js";
 import type { Book, BookFormData, BookStatus, ReviewDraft, SeriesEntry } from "../types/book.js";
 
-export function useBooks() {
+export function useBooks(enabled: boolean) {
   const [books, setBooks] = useState<Book[]>([]);
   const [extraSeries, setExtraSeries] = useState<SeriesEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,8 +24,17 @@ export function useBooks() {
   }, []);
 
   useEffect(() => {
-    refresh();
-  }, [refresh]);
+    if (enabled) {
+      refresh();
+    } else {
+      // Logged out (or not logged in yet) — never hold onto another
+      // account's data in memory.
+      setBooks([]);
+      setExtraSeries([]);
+      setLoading(false);
+      setError(null);
+    }
+  }, [enabled, refresh]);
 
   const saveBook = useCallback(async (data: BookFormData) => {
     const payload = { ...data };

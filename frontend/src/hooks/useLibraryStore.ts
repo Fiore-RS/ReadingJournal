@@ -8,8 +8,8 @@ const COVER_PALETTE = [
   "#d9a05b", "#7d9d8f", "#cf9a7a", "#a97c50", "#88a878",
 ];
 
-export function useLibraryStore() {
-  const data = useBooks();
+export function useLibraryStore(enabled: boolean) {
+  const data = useBooks(enabled);
   const [modal, setModal] = useState<ModalState>(null);
 
   const openAddBookModal = (defaultStatus: BookFormData["status"] = "tbr") => {

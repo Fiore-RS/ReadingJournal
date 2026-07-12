@@ -1,5 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext.js";
 
 export const NAV_ITEMS = [
   { path: "/library", label: "Library", icon: "📚" },
@@ -31,7 +32,14 @@ export function LandingNav() {
 
 export function AppNavBar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   // Close the mobile menu automatically whenever the route changes.
   useEffect(() => {
@@ -80,6 +88,19 @@ export function AppNavBar() {
                 </Link>
               );
             })}
+
+            <div className="mt-2 pt-3 border-t border-parchment/15 flex items-center justify-between gap-3 px-1">
+              <div className="min-w-0">
+                <div className="text-parchment font-bold text-sm truncate">{user?.displayName}</div>
+                {user?.isDemo && <div className="text-parchment/50 text-xs">Demo account</div>}
+              </div>
+              <button
+                onClick={handleLogout}
+                className="flex-none py-2 px-4 rounded-full border-[1.5px] border-parchment/25 text-parchment text-sm font-bold cursor-pointer"
+              >
+                Log out
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -106,6 +127,20 @@ export function AppNavBar() {
             </Link>
           );
         })}
+
+        <div className="w-px h-6 bg-parchment/20 flex-none mx-1" />
+        <div className="flex-none flex items-center gap-2 pr-2">
+          <div className="text-parchment/70 text-sm whitespace-nowrap">
+            {user?.displayName}
+            {user?.isDemo && <span className="ml-1 opacity-60">(demo)</span>}
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex-none py-1.5 px-3.5 rounded-full border-[1.5px] border-parchment/25 text-parchment text-sm font-bold cursor-pointer whitespace-nowrap hover:bg-parchment/10 transition-colors"
+          >
+            Log out
+          </button>
+        </div>
       </div>
     </>
   );

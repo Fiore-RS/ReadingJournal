@@ -22,11 +22,40 @@ export class ApiRequestError extends Error {
   }
 }
 
+// The current session token, kept in memory and mirrored to localStorage so
+// it survives a page refresh. AuthContext is the only thing that should
+// call setAuthToken — everything else just calls apiFetch as before and
+// gets the header applied automatically.
+const TOKEN_STORAGE_KEY = "readingJournal.token";
+let authToken: string | null = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+export function setAuthToken(token: string | null) {
+  authToken = token;
+  if (token) {
+    localStorage.setItem(TOKEN_STORAGE_KEY, token);
+  } else {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
+  }
+}
+
+export function getAuthToken(): string | null {
+  return authToken;
+}
+
+// AuthContext registers itself here so apiFetch can force a logout when the
+// backend says the session is no longer valid (expired/invalid token),
+// without api.ts needing to know anything about React.
+let onUnauthorized: (() => void) | null = null;
+export function setUnauthorizedHandler(handler: (() => void) | null) {
+  onUnauthorized = handler;
+}
+
 export async function apiFetch<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
       ...options.headers,
     },
   });
@@ -38,6 +67,9 @@ export async function apiFetch<T>(path: string, options: RequestInit = {}): Prom
   const body = await res.json().catch(() => null);
 
   if (!res.ok) {
+    if (res.status === 401) {
+      onUnauthorized?.();
+    }
     throw new ApiRequestError(res.status, body?.error || `Request failed with ${res.status}`, body?.details);
   }
 

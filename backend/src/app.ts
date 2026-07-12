@@ -3,10 +3,12 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import { env } from "../env";
+import authRoutes from "./routes/auth_routes";
 import booksRoutes from "./routes/books_routes";
 import seriesRoutes from "./routes/series_routes";
 import uploadsRoutes from "./routes/uploads_routes";
 import { UPLOADS_ROOT } from "./middleware/upload";
+import { requireAuth } from "./middleware/auth_middleware";
 import { notFoundHandler, errorHandler } from "./middleware/error_handler";
 
 export const app = express();
@@ -32,9 +34,10 @@ app.use(
   express.static(UPLOADS_ROOT)
 );
 
-app.use("/api/books", booksRoutes);
-app.use("/api/series", seriesRoutes);
-app.use("/api/uploads", uploadsRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/books", requireAuth, booksRoutes);
+app.use("/api/series", requireAuth, seriesRoutes);
+app.use("/api/uploads", requireAuth, uploadsRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

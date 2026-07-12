@@ -1,7 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.js";
 import { LibraryProvider } from "./context/LibraryContext.js";
+import RequireAuth from "./components/RequireAuth.js";
 import AppLayout from "./components/AppLayout.js";
 import Landing from "./pages/Landing.js";
+import Login from "./pages/Login.js";
 import ShelfPage from "./pages/ShelfPage.js";
 import Series from "./pages/Series.js";
 import Reading from "./pages/Reading.js";
@@ -10,37 +13,42 @@ import Stats from "./pages/Stats.js";
 
 export default function App() {
   return (
-    <LibraryProvider>
-      <BrowserRouter basename="/ReadingJournal">
-        <div className="w-full h-dvh overflow-hidden bg-cream font-body flex flex-col relative">
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route element={<AppLayout />}>
-              <Route
-                path="/library"
-                element={<ShelfPage variant="library" />}
-              />
-              <Route path="/tbr" element={<ShelfPage variant="tbr" />} />
-              <Route
-                path="/wishlist"
-                element={<ShelfPage variant="wishlist" />}
-              />
-              <Route
-                path="/finished"
-                element={<ShelfPage variant="finished" />}
-              />
-              <Route
-                path="/favorites"
-                element={<ShelfPage variant="favorites" />}
-              />
-              <Route path="/reviews" element={<Reviews />} />
-              <Route path="/stats" element={<Stats />} />
-              <Route path="/series" element={<Series />} />
-              <Route path="/reading" element={<Reading />} />
-            </Route>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </LibraryProvider>
+    <AuthProvider>
+      <LibraryProvider>
+        <BrowserRouter basename="/ReadingJournal">
+          <div className="w-full h-dvh overflow-hidden bg-cream font-body flex flex-col relative">
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/login" element={<Login />} />
+              <Route element={<RequireAuth />}>
+                <Route element={<AppLayout />}>
+                  <Route
+                    path="/library"
+                    element={<ShelfPage variant="library" />}
+                  />
+                  <Route path="/tbr" element={<ShelfPage variant="tbr" />} />
+                  <Route
+                    path="/wishlist"
+                    element={<ShelfPage variant="wishlist" />}
+                  />
+                  <Route
+                    path="/finished"
+                    element={<ShelfPage variant="finished" />}
+                  />
+                  <Route
+                    path="/favorites"
+                    element={<ShelfPage variant="favorites" />}
+                  />
+                  <Route path="/reviews" element={<Reviews />} />
+                  <Route path="/stats" element={<Stats />} />
+                  <Route path="/series" element={<Series />} />
+                  <Route path="/reading" element={<Reading />} />
+                </Route>
+              </Route>
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </LibraryProvider>
+    </AuthProvider>
   );
 }
