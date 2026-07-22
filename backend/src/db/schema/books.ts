@@ -3,7 +3,7 @@ import { users } from "./users";
 
 export const bookFormatEnum = pgEnum("book_format", ["physical", "digital"]);
 export const bookStatusEnum = pgEnum("book_status", ["tbr", "reading", "wishlist", "finished"]);
-export const bookCategoryEnum = pgEnum("book_category", ["book", "novel", "manga"]);
+export const bookCategoryEnum = pgEnum("book_category", ["book", "novel", "comic"]);
 
 export const books = pgTable("books", {
   id: uuid("id").primaryKey().defaultRandom(),

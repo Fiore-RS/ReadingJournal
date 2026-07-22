@@ -21,7 +21,7 @@ export default function BookCard({ book, onClick, size = "normal", metaMode }: B
   const stripeAngle = ((book.title || "").length * 13) % 180;
   const coverStripes = `repeating-linear-gradient(${stripeAngle}deg, rgba(255,255,255,0.10) 0px, rgba(255,255,255,0.10) 6px, transparent 6px, transparent 16px)`;
   const imageUrl = resolveMediaUrl(book.coverImage);
-  const categoryLabel = book.category === "manga" ? "Manga" : book.category === "novel" ? "Novel" : null;
+  const categoryLabel = book.category === "comic" ? "Comic" : book.category === "novel" ? "Novel" : null;
 
   let metaLine1 = "";
   let metaLine2 = "";

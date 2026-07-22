@@ -157,7 +157,7 @@ export default function BookFormModal({ mode, formData, onChange, onSave, onClos
         <div>
           <label className={labelClass}>Category</label>
           <div className="flex gap-2 mt-1.5">
-            {(["book", "novel", "manga"] as const).map((cat) => (
+            {(["book", "novel", "comic"] as const).map((cat) => (
               <button
                 key={cat}
                 onClick={() => onChange({ category: cat })}
@@ -167,7 +167,7 @@ export default function BookFormModal({ mode, formData, onChange, onSave, onClos
                   color: formData.category === cat ? "#fbf5e9" : "#5c4632",
                 }}
               >
-                {cat === "book" ? "📘 Book" : cat === "novel" ? "📗 Novel" : "📓 Manga"}
+                {cat === "book" ? "📘 Book" : cat === "novel" ? "📗 Novel" : "📓 Comic"}
               </button>
             ))}
           </div>

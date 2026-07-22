@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const bookFormatSchema = z.enum(["physical", "digital"]);
 export const bookStatusSchema = z.enum(["tbr", "reading", "wishlist", "finished"]);
-export const bookCategorySchema = z.enum(["book", "novel", "manga"]);
+export const bookCategorySchema = z.enum(["book", "novel", "comic"]);
 
 export const createBookSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),

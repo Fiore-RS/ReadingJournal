@@ -16,7 +16,7 @@ const CATEGORY_FILTERS: { value: BookCategory | "all"; label: string }[] = [
   { value: "all", label: "All" },
   { value: "book", label: "📘 Books" },
   { value: "novel", label: "📗 Novels" },
-  { value: "manga", label: "📓 Manga" },
+  { value: "comic", label: "📓 Comic" },
 ];
 
 export default function BookShelf({ books, pageTitle, pageIcon, addLabel, onAddClick, onOpenBook, emptyText }: BookShelfProps) {

@@ -1,6 +1,6 @@
 export type BookFormat = "physical" | "digital";
 export type BookStatus = "tbr" | "reading" | "wishlist" | "finished";
-export type BookCategory = "book" | "novel" | "manga";
+export type BookCategory = "book" | "novel" | "comic";
 
 export interface Book {
   id: string;
