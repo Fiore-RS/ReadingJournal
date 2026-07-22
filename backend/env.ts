@@ -15,6 +15,14 @@ const envSchema = z.object({
     .string()
     .min(32, "JWT_SECRET is required and should be at least 32 characters — generate one with `openssl rand -hex 32`"),
   JWT_EXPIRES_IN: z.string().default("30d"),
+
+  // Cover images are stored on Cloudinary rather than local disk — Render's
+  // free tier wipes local files on every restart, which was silently
+  // breaking covers. Get these from your Cloudinary dashboard (Settings ->
+  // API Keys) after creating a free account at cloudinary.com.
+  CLOUDINARY_CLOUD_NAME: z.string().min(1, "CLOUDINARY_CLOUD_NAME is required — see your Cloudinary dashboard"),
+  CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required — see your Cloudinary dashboard"),
+  CLOUDINARY_API_SECRET: z.string().min(1, "CLOUDINARY_API_SECRET is required — see your Cloudinary dashboard"),
 });
 
 const parsed = envSchema.safeParse(process.env);

@@ -1,27 +1,36 @@
 import multer from "multer";
-import path from "node:path";
-import fs from "node:fs";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 import { randomUUID } from "node:crypto";
-import { fileURLToPath } from "node:url";
+import { env } from "../../env";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Cover images live on Cloudinary instead of local disk. Render's free tier
+// wipes local files on every restart (inactivity spin-down, redeploys),
+// which was silently breaking covers after the first restart. Cloudinary
+// persists them independently of whatever host runs the API.
+cloudinary.config({
+  cloud_name: env.CLOUDINARY_CLOUD_NAME,
+  api_key: env.CLOUDINARY_API_KEY,
+  api_secret: env.CLOUDINARY_API_SECRET,
+});
 
-// backend/uploads/covers — created on boot if it doesn't exist yet.
-// This folder is gitignored; images live only on the machine running the API.
-export const UPLOADS_ROOT = path.join(__dirname, "..", "..", "uploads");
-export const COVERS_DIR = path.join(UPLOADS_ROOT, "covers");
-
-fs.mkdirSync(COVERS_DIR, { recursive: true });
+// Kept separate from anything else on the Cloudinary account, in case it's
+// ever shared with another project.
+const CLOUDINARY_FOLDER = "reading-journal/covers";
 
 const ALLOWED_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, COVERS_DIR),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || ".jpg";
-    cb(null, `${randomUUID()}${ext}`);
-  },
+const storage = new CloudinaryStorage({
+  cloudinary,
+  // Cast needed because multer-storage-cloudinary's typings lose named keys
+  // (like "folder") when combined with cloudinary's UploadApiOptions index
+  // signature — a known quirk of that package's .d.ts, not a real type error.
+  params: {
+    folder: CLOUDINARY_FOLDER,
+    public_id: () => randomUUID(),
+    resource_type: "image",
+  } as ConstructorParameters<typeof CloudinaryStorage>[0]["params"],
 });
 
 export const uploadCoverImage = multer({
@@ -36,17 +45,25 @@ export const uploadCoverImage = multer({
   },
 });
 
-// Deletes a previously uploaded cover image given its relative URL
-// (e.g. "/uploads/covers/xyz.jpg"). Safe by construction: we only ever use
-// the filename portion, so this can never escape COVERS_DIR regardless of
-// what's passed in. Best-effort — a missing file is not an error.
-export function deleteUploadedFile(relativeUrl: string | null | undefined) {
-  if (!relativeUrl) return;
-  const filename = path.basename(relativeUrl);
-  const filePath = path.join(COVERS_DIR, filename);
-  fs.unlink(filePath, (err) => {
-    if (err && err.code !== "ENOENT") {
-      console.error("Failed to delete cover image:", filePath, err);
-    }
+// Cloudinary URLs look like:
+//   https://res.cloudinary.com/<cloud>/image/upload/v169.../reading-journal/covers/<id>.jpg
+// Deleting an asset needs its public_id — the folder + filename portion,
+// without the version segment or file extension. We only ever generated
+// these URLs ourselves (via uploadCoverImage above), so this parse is safe.
+function extractPublicId(url: string): string | null {
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[a-zA-Z0-9]+(?:\?.*)?$/);
+  return match ? match[1] : null;
+}
+
+// Deletes a previously uploaded cover image given its Cloudinary URL.
+// Best-effort — a missing/already-deleted asset is not an error, and a URL
+// that isn't a Cloudinary URL (e.g. leftover local path from before this
+// migration) is just skipped rather than thrown.
+export function deleteUploadedFile(url: string | null | undefined) {
+  if (!url) return;
+  const publicId = extractPublicId(url);
+  if (!publicId) return;
+  cloudinary.uploader.destroy(publicId).catch((err) => {
+    console.error("Failed to delete cover image from Cloudinary:", publicId, err);
   });
 }
