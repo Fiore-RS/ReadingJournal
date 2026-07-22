@@ -53,6 +53,7 @@ const wishlistColumns = {
   title: books.title,
   author: books.author,
   format: books.format,
+  category: books.category,
   series: books.series,
   seriesOrder: books.seriesOrder,
   pages: books.pages,

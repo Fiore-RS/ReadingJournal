@@ -1,4 +1,5 @@
 import { apiFetch } from "./api.js";
+import type { BookCategory } from "../types/book.js";
 
 export interface PreviewBook {
   id: string;
@@ -15,6 +16,7 @@ interface PreviewResponse {
 }
 
 export interface PublicWishlistBook extends PreviewBook {
+  category: BookCategory;
   series: string | null;
   seriesOrder: number | null;
   pages: number;
