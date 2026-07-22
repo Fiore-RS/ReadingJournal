@@ -14,6 +14,12 @@ interface PreviewResponse {
   finished: PreviewBook[];
 }
 
+export interface PublicWishlistBook extends PreviewBook {
+  series: string | null;
+  seriesOrder: number | null;
+}
+
 export const publicService = {
   preview: () => apiFetch<PreviewResponse>("/public/preview"),
+  wishlist: () => apiFetch<PublicWishlistBook[]>("/public/wishlist"),
 };

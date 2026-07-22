@@ -21,10 +21,37 @@ export default function Login() {
   };
 
   return (
-    <div
-      className="w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 overflow-y-auto"
-      style={{ background: "radial-gradient(ellipse at 50% 15%, #fbf5e9 0%, #f6efe2 55%, #ead9bd 100%)" }}
-    >
+    <div className="w-full h-full flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
+      {/* Welcome panel — introduces the project and points visitors to the
+          public gift list. Stacks above the form on small screens since
+          there isn't room for two side-by-side columns there. */}
+      <div
+        className="order-1 lg:order-2 w-full lg:w-1/2 flex flex-col items-center justify-center text-center px-6 sm:px-10 py-10 lg:py-8 gap-4"
+        style={{ background: "radial-gradient(ellipse at 50% 20%, #8fae7d 0%, #7d9d6e 60%, #6a8c5c 100%)" }}
+      >
+        <span className="text-[40px]">👋</span>
+        <h2 className="font-display font-bold text-[26px] sm:text-[30px] text-parchment leading-tight max-w-sm">
+          Welcome to my reading corner!
+        </h2>
+        <p className="font-body text-[15px] text-parchment/90 max-w-sm leading-relaxed">
+          This is my personal library — where I keep track of everything I'm reading, have read, or am hoping to read next.
+        </p>
+        <p className="font-body text-[15px] text-parchment/90 max-w-sm leading-relaxed">
+          Looking for a gift idea? Take a peek at my wishlist.
+        </p>
+        <Link
+          to="/gift-list"
+          className="mt-2 inline-block py-3 px-7 rounded-[20px] bg-parchment text-clay font-extrabold text-base shadow-[0_4px_10px_rgba(0,0,0,0.18)] transition-transform hover:-translate-y-0.5"
+        >
+          🎁 See my Gift List
+        </Link>
+      </div>
+
+      {/* Login form panel */}
+      <div
+        className="order-2 lg:order-1 w-full lg:w-1/2 flex flex-col items-center justify-center px-4 sm:px-6 py-10 lg:py-8"
+        style={{ background: "radial-gradient(ellipse at 50% 15%, #fbf5e9 0%, #f6efe2 55%, #ead9bd 100%)" }}
+      >
       <div className="w-full max-w-[400px]">
         <div className="text-center mb-7">
           <span className="text-[32px]">📕</span>
@@ -91,6 +118,7 @@ export default function Login() {
             ← Back to home
           </Link>
         </div>
+      </div>
       </div>
     </div>
   );

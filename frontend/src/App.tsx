@@ -5,6 +5,7 @@ import RequireAuth from "./components/RequireAuth.js";
 import AppLayout from "./components/AppLayout.js";
 import Landing from "./pages/Landing.js";
 import Login from "./pages/Login.js";
+import GiftList from "./pages/GiftList.js";
 import ShelfPage from "./pages/ShelfPage.js";
 import Series from "./pages/Series.js";
 import Reading from "./pages/Reading.js";
@@ -20,6 +21,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/gift-list" element={<GiftList />} />
               <Route element={<RequireAuth />}>
                 <Route element={<AppLayout />}>
                   <Route

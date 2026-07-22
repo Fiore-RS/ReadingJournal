@@ -44,3 +44,37 @@ export const getPreview = asyncHandler(async (_req: Request, res: Response) => {
 
   res.json({ reading, finished });
 });
+
+// A slightly richer slice than the landing preview — enough for a friend
+// browsing the gift list to know what to look for (title, author, series,
+// format), but still nothing editable or private (no progress/review data).
+const wishlistColumns = {
+  id: books.id,
+  title: books.title,
+  author: books.author,
+  format: books.format,
+  series: books.series,
+  seriesOrder: books.seriesOrder,
+  coverBg: books.coverBg,
+  coverImage: books.coverImage,
+};
+
+// GET /api/public/wishlist — unauthenticated. Read-only list of the owner's
+// wishlist books, meant to be shared with friends/family as a gift list.
+// Same "owner account, never demo" scoping as the preview endpoint above.
+export const getPublicWishlist = asyncHandler(async (_req: Request, res: Response) => {
+  const [owner] = await db.select({ id: users.id }).from(users).where(eq(users.isDemo, false)).limit(1);
+
+  if (!owner) {
+    res.json([]);
+    return;
+  }
+
+  const wishlist = await db
+    .select(wishlistColumns)
+    .from(books)
+    .where(and(eq(books.userId, owner.id), eq(books.status, "wishlist")))
+    .orderBy(books.createdAt);
+
+  res.json(wishlist);
+});
