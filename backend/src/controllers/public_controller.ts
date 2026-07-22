@@ -55,6 +55,7 @@ const wishlistColumns = {
   format: books.format,
   series: books.series,
   seriesOrder: books.seriesOrder,
+  pages: books.pages,
   coverBg: books.coverBg,
   coverImage: books.coverImage,
 };

@@ -17,6 +17,7 @@ interface PreviewResponse {
 export interface PublicWishlistBook extends PreviewBook {
   series: string | null;
   seriesOrder: number | null;
+  pages: number;
 }
 
 export const publicService = {
